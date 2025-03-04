@@ -30,6 +30,10 @@ const getAllAdminFromDb = async (params: any, options: any) => {
     });
   }
 
+  andConditions.push({
+    isDeleted: false,
+  });
+
   const whereConditions: Prisma.AdminWhereInput = { AND: andConditions };
 
   const result = await prisma.admin.findMany({
@@ -60,7 +64,7 @@ const getAllAdminFromDb = async (params: any, options: any) => {
   };
 };
 
-const getByIdFromDb = async (id: string) => {
+const getByIdFromDb = async (id: string): Promise<Admin | null> => {
   const result = await prisma.admin.findUnique({
     where: {
       id,
@@ -71,7 +75,7 @@ const getByIdFromDb = async (id: string) => {
   return result;
 };
 
-const deleteFromDb = async (id: string) => {
+const deleteFromDb = async (id: string): Promise<Admin | null> => {
   await prisma.admin.findUniqueOrThrow({
     where: {
       id,
@@ -96,7 +100,10 @@ const deleteFromDb = async (id: string) => {
   return result;
 };
 
-const updateIntoDb = async (id: string, data: Partial<Admin>) => {
+const updateIntoDb = async (
+  id: string,
+  data: Partial<Admin>
+): Promise<Admin> => {
   await prisma.admin.findUniqueOrThrow({
     where: {
       id,
@@ -114,7 +121,7 @@ const updateIntoDb = async (id: string, data: Partial<Admin>) => {
   return result;
 };
 
-const softDeleteFromDB = async (id: string) => {
+const softDeleteFromDB = async (id: string): Promise<Admin | null> => {
   await prisma.admin.findUniqueOrThrow({
     where: {
       id,
@@ -141,7 +148,7 @@ const softDeleteFromDB = async (id: string) => {
       },
     });
 
-    return adminDeletedData
+    return adminDeletedData;
   });
 
   return result;

@@ -11,4 +11,6 @@ export const globalErrorHandler = (
     message: err.name || "Something went wrong!",
     error: err,
   });
+
+  next();
 };

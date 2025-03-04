@@ -23,8 +23,6 @@ const getAllAdmin = async (req: Request, res: Response) => {
   }
 };
 
-
-
 const getByIdFromDb = async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await AdminServices.getByIdFromDb(id);
@@ -35,7 +33,6 @@ const getByIdFromDb = async (req: Request, res: Response) => {
     data: result,
   });
 };
-
 
 const deleteFromDb = async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -48,4 +45,20 @@ const deleteFromDb = async (req: Request, res: Response) => {
   });
 };
 
-export const AdminControllers = { getAllAdmin,getByIdFromDb ,deleteFromDb};
+const updateIntoDb = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await AdminServices.updateIntoDb(id, req.body);
+
+  res.status(200).json({
+    success: true,
+    message: "Admin data updated",
+    data: result,
+  });
+};
+
+export const AdminControllers = {
+  getAllAdmin,
+  getByIdFromDb,
+  deleteFromDb,
+  updateIntoDb,
+};

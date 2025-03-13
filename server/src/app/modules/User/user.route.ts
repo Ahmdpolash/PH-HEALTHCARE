@@ -8,4 +8,4 @@ router.post("/create-admin", userControllers.createAdmin)
 router.get("/admin", AdminControllers.getAllAdmin)
 
 
-export const userRoutes = router
+export const UserRoutes = router

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
-export const globalErrorHandler = (
+
+const globalErrorHandler = (
   err: any,
   req: Request,
   res: Response,
@@ -8,9 +9,11 @@ export const globalErrorHandler = (
 ) => {
   res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
     success: false,
-    message: err.name || "Something went wrong!",
+    message: err.message || "Something went wrong!",
     error: err,
   });
+  next(); 
 
-  next();
 };
+
+export default globalErrorHandler;

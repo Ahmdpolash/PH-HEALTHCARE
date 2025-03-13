@@ -4,9 +4,10 @@ import { TLoginUser } from "./auth.interface";
 
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { jwtHelpers } from "../../../helper/jwtHelper";
 
 const loginUser = async (payload: TLoginUser) => {
-  const userData = await prisma.user.findUniqueOrThrow({
+  const user = await prisma.user.findUniqueOrThrow({
     where: {
       email: payload.email,
     },
@@ -14,25 +15,43 @@ const loginUser = async (payload: TLoginUser) => {
 
   const isCorrectPassword = await bcrypt.compare(
     payload.password,
-    userData.password
+    user.password
   );
 
   if (!isCorrectPassword) {
     throw new Error("Password incorrect!");
   }
 
-  const accesToken = jwt.sign(
+  // access token generation
+
+  const accessToken = jwtHelpers.generateToken(
     {
-      email: userData.email,
-      role: userData.role,
+      email: user.email,
+      role: user.role,
     },
-    "abcdefghgijklmnop",
-    {
-      expiresIn: "15m",
-    }
+    "abcdefg",
+    "5m"
   );
 
-  return { userData, accesToken };
+  const refreshToken = jwtHelpers.generateToken(
+    {
+      email: user.email,
+      role: user.role,
+    },
+    "abcdefghgijklmnop",
+    "30d"
+  );
+  return {
+    accessToken,
+    refreshToken,
+    needsPasswordChange: user?.needPasswordChange,
+  };
 };
 
-export const AuthServices = { loginUser };
+// refresh token
+
+const refreshToken = async (token: string) => {
+  console.log("token ", token);
+};
+
+export const AuthServices = { loginUser, refreshToken };

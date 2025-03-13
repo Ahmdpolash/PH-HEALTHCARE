@@ -51,7 +51,32 @@ const loginUser = async (payload: TLoginUser) => {
 // refresh token
 
 const refreshToken = async (token: string) => {
-  console.log("token ", token);
+  let decodedData;
+
+  try {
+    decodedData = jwtHelpers.verifyToken(token, "abcdefghgijklmnop");
+  } catch (error) {
+    throw new Error("You are not authorized!");
+  }
+
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      email: decodedData.email,
+    },
+  });
+
+  const accessToken = jwtHelpers.generateToken(
+    {
+      email: user.email,
+      role: user.role,
+    },
+    "abcdefg",
+    "5m"
+  );
+
+  return {
+    accessToken,
+  };
 };
 
 export const AuthServices = { loginUser, refreshToken };

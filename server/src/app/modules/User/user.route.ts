@@ -8,6 +8,7 @@ import { userValidationSchemas } from "./user.validations";
 
 const router = Router();
 
+// create-admin route
 router.post(
   "/create-admin",
   auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
@@ -20,6 +21,17 @@ router.post(
   }
 );
 
-router.get("/admin", AdminControllers.getAllAdmin);
+//create doctor route
 
+router.post(
+  "/create-doctor",
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  fileUploader.upload.single("file"),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = userValidationSchemas.createDoctor.parse(
+      JSON.parse(req.body.data)
+    );
+    return userControllers.createDoctor(req, res, next);
+  }
+);
 export const UserRoutes = router;

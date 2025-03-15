@@ -1,9 +1,10 @@
-import { PrismaClient, UserRole } from "@prisma/client";
+import { UserRole } from "@prisma/client";
 import bcrypt from "bcrypt";
-import config from "../../../config";
+
 import prisma from "../../../shared/prisma";
 import { fileUploader } from "../../utils/uploadImageOnCloudinary";
 
+//CREATE ADMIN
 const createAdmin = async (req: any) => {
   // upload image to cloudinary
   const file = req.file;
@@ -38,13 +39,43 @@ const createAdmin = async (req: any) => {
   return result;
 };
 
-const getAllAdminFromDb = async () => {
-  const result = await prisma.user.findMany();
+//CREATE DOCTOR
+const createDoctor = async (req: any) => {
+  //upload image
+
+  const file = req.file;
+
+  if (file) {
+    const uploadImageOnCloudinary = await fileUploader.uploadToCloudinary(file);
+    req.body.doctor.profilePhoto = uploadImageOnCloudinary?.secure_url;
+  }
+
+  // hashed password
+
+  const hashedPassword = await bcrypt.hash(req.body.password, 12);
+
+  const userData = {
+    email: req.body.doctor.email,
+    password: hashedPassword,
+    role: UserRole.DOCTOR,
+  };
+
+  const result = await prisma.$transaction(async (trx) => {
+    await trx.user.create({
+      data: userData,
+    });
+
+    const createDoctor = await trx.doctor.create({
+      data: req.body.doctor,
+    });
+
+    return createDoctor;
+  });
 
   return result;
 };
 
 export const userServices = {
   createAdmin,
-  getAllAdminFromDb,
+  createDoctor,
 };

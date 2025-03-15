@@ -1,10 +1,10 @@
 import { Request, RequestHandler, Response } from "express";
 import { userServices } from "./user.services";
 import { catchAsync } from "../../../shared/catchAsync";
-
+import sendResponse from "../../../shared/sentResponse";
+import httpStatus from "http-status";
+//CREATE ADMIN
 const createAdmin: RequestHandler = catchAsync(async (req, res) => {
-
-
   const result = await userServices.createAdmin(req);
 
   res.status(200).json({
@@ -14,13 +14,23 @@ const createAdmin: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
-const getAllAdmin: RequestHandler = async (req, res) => {
-  const result = await userServices.getAllAdminFromDb();
+//CREATE DOCTOR
 
-  res.send(result);
-};
+const createDoctor: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
 
+    console.log(req.body)
+    const result = await userServices.createDoctor(req);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Doctor Created successfuly!",
+      data: result,
+    });
+  }
+);
 export const userControllers = {
   createAdmin,
-  getAllAdmin,
+  createDoctor,
 };

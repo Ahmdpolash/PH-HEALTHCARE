@@ -7,6 +7,8 @@ import config from "../../../config";
 import ApiError from "../../error/ApiError";
 
 import httpStatus from "http-status";
+import { Secret } from "jsonwebtoken";
+import { emailSender } from "../../utils/emailSender";
 
 // login
 const loginUser = async (payload: TLoginUser) => {
@@ -127,4 +129,36 @@ const changePassword = async (user: any, payload: any) => {
   };
 };
 
-export const AuthServices = { loginUser, refreshToken, changePassword };
+//forgot password
+
+const forgotPassword = async (email: string) => {
+  // find user
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      email,
+      status: UserStatus.ACTIVE,
+    },
+  });
+
+  // generate a token
+  const resetPasswordToken = await jwtHelpers.generateToken(
+    { email: user.email, role: user.role },
+    config.reset_password_token as Secret,
+    config.reset_password_token_expiry as string
+  );
+
+  // send the token to the user's email
+
+  const resetPassLink =
+    config.reset_password_url +
+    `?userId=${user.id}&token=${resetPasswordToken}`;
+
+  emailSender(user.email, user.email, resetPassLink);
+};
+
+export const AuthServices = {
+  loginUser,
+  refreshToken,
+  changePassword,
+  forgotPassword,
+};

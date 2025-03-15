@@ -2,27 +2,23 @@ import { PrismaClient, UserRole } from "@prisma/client";
 import bcrypt from "bcrypt";
 import config from "../../../config";
 import prisma from "../../../shared/prisma";
+import { fileUploader } from "../../utils/uploadImageOnCloudinary";
 
-const createAdmin = async (data: any) => {
-  // check the email already exists or not
+const createAdmin = async (req: any) => {
+  // upload image to cloudinary
+  const file = req.file;
 
-
-
-  // const isExistUser = await prisma.user.findUniqueOrThrow({
-  //   where: {
-  //     email: data.email,
-  //   },
-  // });
-
-  // if (isExistUser) {
-  //   throw new Error("user already exists");
-  // }
+  if (file) {
+    // const imageName = `${req.body.admin.name } ;
+    const uploadImageToCloudinary = await fileUploader.uploadToCloudinary(file);
+    req.body.admin.profilePhoto = uploadImageToCloudinary?.secure_url;
+  }
 
   // hashed the password
-  const hashedPassword = await bcrypt.hash(data.password, 12);
+  const hashedPassword = await bcrypt.hash(req.body.password, 12);
 
   const userData = {
-    email: data.admin.email,
+    email: req.body.admin.email,
     password: hashedPassword,
     role: UserRole.ADMIN,
   };
@@ -33,7 +29,7 @@ const createAdmin = async (data: any) => {
     });
 
     const createdAdmin = await trx.admin.create({
-      data: data.admin,
+      data: req.body.admin,
     });
 
     return createdAdmin;

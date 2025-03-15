@@ -1,14 +1,25 @@
 import { z } from "zod";
 
-const createUser = z.object({
-  body: z.object({
-    name: z.string().min(2).max(50),
-    email: z.string().email(),
-    password: z.string().min(8).max(128),
+const createAdmin = z.object({
+  password: z.string({
+    required_error: "Password is required",
+  }),
+  admin: z.object({
+    name: z.string({
+      required_error: "Name is required!",
+    }),
+    email: z.string({
+      required_error: "Email is required!",
+    }),
+    contactNumber: z.string({
+      required_error: "Contact Number is required!",
+    }),
   }),
 });
 
 
+
 export const userValidationSchemas = {
-  createUser,
+
+  createAdmin,
 };

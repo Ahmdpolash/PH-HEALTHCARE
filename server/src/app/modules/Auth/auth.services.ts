@@ -30,8 +30,8 @@ const loginUser = async (payload: TLoginUser) => {
       email: user.email,
       role: user.role,
     },
-    config.jwt_access_secret as string,
-    config.jwt_access_expires_in as string
+    config.jwt.jwt_access_secret as string,
+    config.jwt.jwt_access_expires_in as string
   );
 
   const refreshToken = jwtHelpers.generateToken(
@@ -39,8 +39,8 @@ const loginUser = async (payload: TLoginUser) => {
       email: user.email,
       role: user.role,
     },
-    config.jwt_refresh_secret as string,
-    config.jwt_refresh_epires_in as string
+    config.jwt.jwt_refresh_secret as string,
+    config.jwt.jwt_refresh_epires_in as string
   );
 
   return {
@@ -58,7 +58,7 @@ const refreshToken = async (token: string) => {
   try {
     decodedData = jwtHelpers.verifyToken(
       token,
-      config.jwt_refresh_secret as string
+      config.jwt.jwt_refresh_secret as string
     );
   } catch (error) {
     throw new Error("You are not authorized!");
@@ -76,8 +76,8 @@ const refreshToken = async (token: string) => {
       email: user.email,
       role: user.role,
     },
-    config.jwt_access_secret as string,
-    config.jwt_access_expires_in as string
+    config.jwt.jwt_access_secret as string,
+    config.jwt.jwt_access_expires_in as string
   );
 
   return {

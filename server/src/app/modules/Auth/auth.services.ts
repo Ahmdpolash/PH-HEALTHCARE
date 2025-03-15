@@ -19,6 +19,7 @@ const loginUser = async (payload: TLoginUser) => {
     },
   });
 
+  // check valid password
   const isCorrectPassword = await bcrypt.compare(
     payload.password,
     user.password

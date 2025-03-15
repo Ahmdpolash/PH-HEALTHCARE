@@ -18,7 +18,7 @@ export const auth = (...roles: string[]) => {
         //check if the token is sent from client
 
         if (!token) {
-          throw new ApiError(httpStatus.UNAUTHORIZED, "you are not authorized");   
+          throw new ApiError(httpStatus.UNAUTHORIZED, "you are not authorized");
         }
         const verifiedUser = jwtHelpers.verifyToken(
           token,

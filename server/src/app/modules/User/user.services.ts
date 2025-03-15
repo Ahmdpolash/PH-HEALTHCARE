@@ -4,6 +4,21 @@ import config from "../../../config";
 import prisma from "../../../shared/prisma";
 
 const createAdmin = async (data: any) => {
+  // check the email already exists or not
+
+
+
+  // const isExistUser = await prisma.user.findUniqueOrThrow({
+  //   where: {
+  //     email: data.email,
+  //   },
+  // });
+
+  // if (isExistUser) {
+  //   throw new Error("user already exists");
+  // }
+
+  // hashed the password
   const hashedPassword = await bcrypt.hash(data.password, 12);
 
   const userData = {

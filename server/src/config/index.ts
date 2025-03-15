@@ -19,6 +19,6 @@ export default {
   emailSender: {
     email: process.env.EMAIL,
     app_password: process.env.APP_PASSWORD,
-    host:process.env.HOST
+    host: process.env.HOST,
   },
 };

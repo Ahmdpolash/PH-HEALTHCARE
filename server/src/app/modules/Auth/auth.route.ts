@@ -20,7 +20,6 @@ router.post(
   AuthControllers.forgotPassword
 );
 
-
-router.post('/reset-password', AuthControllers.resetPassword);
+router.post("/reset-password", AuthControllers.resetPassword);
 
 export const AuthRoutes = router;

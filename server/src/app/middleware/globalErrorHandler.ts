@@ -16,3 +16,11 @@ const globalErrorHandler = (
 };
 
 export default globalErrorHandler;
+
+/*
+JWT errors
+  if (err.name === 'JsonWebTokenError' || err.name === 'TokenExpiredError') {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+
+*/

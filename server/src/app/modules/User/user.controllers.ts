@@ -18,8 +18,6 @@ const createAdmin: RequestHandler = catchAsync(async (req, res) => {
 
 const createDoctor: RequestHandler = catchAsync(
   async (req: Request, res: Response) => {
-
-    console.log(req.body)
     const result = await userServices.createDoctor(req);
 
     sendResponse(res, {
@@ -30,7 +28,23 @@ const createDoctor: RequestHandler = catchAsync(
     });
   }
 );
+//CREATE PATIENT
+
+const createPatient: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const result = await userServices.createPatient(req);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Patient Created successfuly!",
+      data: result,
+    });
+  }
+);
+
 export const userControllers = {
   createAdmin,
   createDoctor,
+  createPatient,
 };

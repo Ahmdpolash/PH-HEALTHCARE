@@ -3,6 +3,8 @@ import { catchAsync } from "../../shared/catchAsync";
 import { jwtHelpers } from "../../helper/jwtHelper";
 import config from "../../config";
 import { Secret } from "jsonwebtoken";
+import ApiError from "../error/ApiError";
+import httpStatus from "http-status";
 
 export const auth = (...roles: string[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
@@ -10,7 +12,7 @@ export const auth = (...roles: string[]) => {
     //check if the token is sent from client
 
     if (!token) {
-      throw new Error("you are not authorized");
+      throw new ApiError(httpStatus.UNAUTHORIZED, "you are not authorized");
     }
 
     const verifiedUser = jwtHelpers.verifyToken(
@@ -19,9 +21,9 @@ export const auth = (...roles: string[]) => {
     );
 
     if (!roles.length && !roles.includes(verifiedUser.role)) {
-      throw new Error("you are not authorized");
+      throw new ApiError(httpStatus.FORBIDDEN, "Forbidden");
     }
 
     next();
-  });
+  }); 
 };

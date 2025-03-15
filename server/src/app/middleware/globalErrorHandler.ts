@@ -12,8 +12,7 @@ const globalErrorHandler = (
     message: err.message || "Something went wrong!",
     error: err,
   });
-  next(); 
-
+  // next();
 };
 
 export default globalErrorHandler;

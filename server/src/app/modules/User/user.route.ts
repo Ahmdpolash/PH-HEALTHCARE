@@ -8,6 +8,14 @@ import { userValidationSchemas } from "./user.validations";
 
 const router = Router();
 
+// get route
+
+router.get(
+  "/",
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
+  userControllers.getAllUsers
+);
+
 // create-admin route
 router.post(
   "/create-admin",

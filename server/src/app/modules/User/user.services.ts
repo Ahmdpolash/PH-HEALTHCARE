@@ -1,11 +1,74 @@
-import { UserRole } from "@prisma/client";
+import { Prisma, UserRole } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 import prisma from "../../../shared/prisma";
 import { fileUploader } from "../../utils/uploadImageOnCloudinary";
+import { Request } from "express";
+import { IPaginationOptions } from "../../interface/pagination";
+import { paginationHelper } from "../../../helper/paginationHelper";
+import { userSearchAbleFields } from "./user.constant";
+
+//GET ALL USERS
+const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
+  const { limit, page, skip } = paginationHelper.calculatePagination(options);
+  const { searchTerm, ...filterData } = params;
+
+  const andConditions: Prisma.UserWhereInput[] = [];
+
+  if (params.searchTerm) {
+    andConditions.push({
+      OR: userSearchAbleFields.map((field) => ({
+        [field]: {
+          contains: params.searchTerm,
+          mode: "insensitive",
+        },
+      })),
+    });
+  }
+
+  if (Object.keys(filterData).length > 0) {
+    andConditions.push({
+      AND: Object.keys(filterData).map((key) => ({
+        [key]: {
+          equals: (filterData as any)[key],
+        },
+      })),
+    });
+  }
+
+  const whereConditions: Prisma.UserWhereInput =
+    andConditions.length > 0 ? { AND: andConditions } : {};
+
+  const result = await prisma.user.findMany({
+    where: whereConditions,
+    skip,
+    take: limit,
+    orderBy:
+      options.sortBy && options.sortOrder
+        ? {
+            [options.sortBy]: options.sortOrder,
+          }
+        : {
+            createdAt: "desc",
+          },
+  });
+
+  const total = await prisma.user.count({
+    where: whereConditions,
+  });
+
+  return {
+    meta: {
+      page,
+      limit,
+      total,
+    },
+    data: result,
+  };
+};
 
 //CREATE ADMIN
-const createAdmin = async (req: any) => {
+const createAdmin = async (req: Request) => {
   // upload image to cloudinary
   const file = req.file;
 
@@ -40,7 +103,7 @@ const createAdmin = async (req: any) => {
 };
 
 //CREATE DOCTOR
-const createDoctor = async (req: any) => {
+const createDoctor = async (req: Request) => {
   //upload image
 
   const file = req.file;
@@ -76,7 +139,7 @@ const createDoctor = async (req: any) => {
 };
 
 //CREATE PATIENT
-const createPatient = async (req: any) => {
+const createPatient = async (req: Request) => {
   //upload image
 
   const file = req.file;
@@ -113,4 +176,5 @@ export const userServices = {
   createAdmin,
   createDoctor,
   createPatient,
+  getAllUsersFromDb,
 };

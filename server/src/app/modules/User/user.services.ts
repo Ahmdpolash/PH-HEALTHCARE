@@ -7,6 +7,7 @@ import { Request } from "express";
 import { IPaginationOptions } from "../../interface/pagination";
 import { paginationHelper } from "../../../helper/paginationHelper";
 import { userSearchAbleFields } from "./user.constant";
+import { IFile } from "../../interface/file";
 
 //GET ALL USERS
 const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
@@ -273,10 +274,16 @@ const getMyProfile = async (user: any) => {
 
 // update profile
 
-const updateMyProfile = async (user, payload) => {
-  console.log("user", user);
-  console.log("payload", payload);
+const updateMyProfile = async (user: any, req: Request) => {
+  // upload image on cloudinary
+  const file = req.file as IFile;
 
+  if (file) {
+    const uploadImageOnCloudinary = await fileUploader.uploadToCloudinary(file);
+    req.body.profilePhoto = uploadImageOnCloudinary?.secure_url;
+  }
+
+  // find user
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {
       email: user.email,
@@ -284,34 +291,35 @@ const updateMyProfile = async (user, payload) => {
     },
   });
 
+  // update role based info
   let profileInfo;
   if (userInfo?.role === UserRole.ADMIN) {
     profileInfo = await prisma.admin.update({
       where: {
         email: user.email,
       },
-      data: payload,
+      data: req.body,
     });
   } else if (userInfo?.role === UserRole.SUPER_ADMIN) {
     profileInfo = await prisma.admin.update({
       where: {
         email: user.email,
       },
-      data: payload,
+      data: req.body,
     });
   } else if (userInfo?.role === UserRole.DOCTOR) {
     profileInfo = await prisma.doctor.update({
       where: {
         email: user.email,
       },
-      data: payload,
+      data: req.body,
     });
   } else if (userInfo?.role === UserRole.PATIENT) {
     profileInfo = await prisma.patient.update({
       where: {
         email: user.email,
       },
-      data: payload,
+      data: req.body,
     });
   }
 

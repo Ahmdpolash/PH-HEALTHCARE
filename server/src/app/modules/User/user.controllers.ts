@@ -80,7 +80,7 @@ const changeProfileStatus: RequestHandler = catchAsync(
 
 //GET MY PROFILE
 const getMyProfile: RequestHandler = catchAsync(
-  async (req: Request, res: Response) => {
+  async (req: Request & { user?: any }, res: Response) => {
     const user = req.user;
 
     const result = await userServices.getMyProfile(user);
@@ -94,6 +94,21 @@ const getMyProfile: RequestHandler = catchAsync(
   }
 );
 
+//update profile
+
+const updateMyProfile: RequestHandler = catchAsync(async (req, res) => {
+  const user = req.user;
+
+  const result = await userServices.updateMyProfile(user, req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Profile updated successfully!",
+    data: result,
+  });
+});
+
 export const userControllers = {
   createAdmin,
   createDoctor,
@@ -101,4 +116,5 @@ export const userControllers = {
   getAllUsersFromDb,
   changeProfileStatus,
   getMyProfile,
+  updateMyProfile,
 };

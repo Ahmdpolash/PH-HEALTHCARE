@@ -10,13 +10,14 @@ import { userSearchAbleFields } from "./user.constant";
 
 //GET ALL USERS
 const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
-  const { limit, page, skip } = paginationHelper.calculatePagination(options);
+  const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
-  const andConditions: Prisma.UserWhereInput[] = [];
+  const andCondions: Prisma.UserWhereInput[] = [];
+
 
   if (params.searchTerm) {
-    andConditions.push({
+    andCondions.push({
       OR: userSearchAbleFields.map((field) => ({
         [field]: {
           contains: params.searchTerm,
@@ -27,7 +28,7 @@ const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
   }
 
   if (Object.keys(filterData).length > 0) {
-    andConditions.push({
+    andCondions.push({
       AND: Object.keys(filterData).map((key) => ({
         [key]: {
           equals: (filterData as any)[key],
@@ -36,11 +37,11 @@ const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
     });
   }
 
-  const whereConditions: Prisma.UserWhereInput =
-    andConditions.length > 0 ? { AND: andConditions } : {};
+  const whereConditons: Prisma.UserWhereInput =
+    andCondions.length > 0 ? { AND: andCondions } : {};
 
   const result = await prisma.user.findMany({
-    where: whereConditions,
+    where: whereConditons,
     skip,
     take: limit,
     orderBy:
@@ -51,10 +52,27 @@ const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
         : {
             createdAt: "desc",
           },
+    select: {
+      id: true,
+      email: true,
+      role: true,
+      needPasswordChange: true,
+      status: true,
+      createdAt: true,
+      updatedAt: true,
+      admin: true,
+      Patient: true,
+      Doctor: true,
+    },
+    // include: {
+    //   admin: true,
+    //   Patient: true,
+    //   Doctor: true,
+    // },
   });
 
   const total = await prisma.user.count({
-    where: whereConditions,
+    where: whereConditons,
   });
 
   return {
@@ -66,7 +84,6 @@ const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
     data: result,
   };
 };
-
 //CREATE ADMIN
 const createAdmin = async (req: Request) => {
   // upload image to cloudinary

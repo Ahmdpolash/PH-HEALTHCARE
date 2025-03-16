@@ -5,4 +5,4 @@ export const userFilterableFields: string[] = [
   "role",
   "status",
   "searchTerm",
-]; // for all filtering
+];

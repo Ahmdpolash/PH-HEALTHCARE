@@ -3,19 +3,22 @@ import { userServices } from "./user.services";
 import { catchAsync } from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sentResponse";
 import httpStatus from "http-status";
-import { userSearchAbleFields } from "./user.constant";
+
 import pick from "../../../shared/pick";
+import { userFilterableFields } from "./user.constant";
 
 //GET ALL USERS
-const getAllUsers: RequestHandler = catchAsync(async (req, res) => {
-  const filters = pick(req.query, userSearchAbleFields);
+const getAllUsersFromDb = catchAsync(async (req: Request, res: Response) => {
+
+  const filters = pick(req.query, userFilterableFields);
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+
   const result = await userServices.getAllUsersFromDb(filters, options);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User data fetched!",
+    message: "Users data fetched!",
     meta: result.meta,
     data: result.data,
   });
@@ -65,5 +68,5 @@ export const userControllers = {
   createAdmin,
   createDoctor,
   createPatient,
-  getAllUsers,
+  getAllUsersFromDb,
 };

@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { userControllers } from "./user.controllers";
-import { AdminControllers } from "../Admin/admin.controller";
 import { auth } from "../../middleware/auth";
 import { UserRole } from "@prisma/client";
 import { fileUploader } from "../../utils/uploadImageOnCloudinary";
@@ -8,12 +7,12 @@ import { userValidationSchemas } from "./user.validations";
 
 const router = Router();
 
-// get route
+// get all users route
 
 router.get(
   "/",
   auth(UserRole.ADMIN, UserRole.SUPER_ADMIN),
-  userControllers.getAllUsers
+  userControllers.getAllUsersFromDb
 );
 
 // create-admin route

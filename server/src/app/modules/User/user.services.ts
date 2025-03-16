@@ -1,4 +1,4 @@
-import { Prisma, UserRole } from "@prisma/client";
+import { Prisma, UserRole, UserStatus } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 import prisma from "../../../shared/prisma";
@@ -14,7 +14,6 @@ const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
   const { searchTerm, ...filterData } = params;
 
   const andCondions: Prisma.UserWhereInput[] = [];
-
 
   if (params.searchTerm) {
     andCondions.push({
@@ -189,9 +188,28 @@ const createPatient = async (req: Request) => {
   return result;
 };
 
+// UPDATE STATUS
+const changeProfileStatus = async (id: string, status: UserStatus) => {
+  const user = await prisma.user.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  });
+
+  const updateStatus = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: status,
+  });
+
+  return updateStatus;
+};
+
 export const userServices = {
   createAdmin,
   createDoctor,
   createPatient,
   getAllUsersFromDb,
+  changeProfileStatus,
 };

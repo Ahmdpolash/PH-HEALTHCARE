@@ -4,6 +4,7 @@ import { auth } from "../../middleware/auth";
 import { UserRole } from "@prisma/client";
 import { fileUploader } from "../../utils/uploadImageOnCloudinary";
 import { userValidationSchemas } from "./user.validations";
+import validateRequest from "../../middleware/validateRequest";
 
 const router = Router();
 
@@ -54,6 +55,14 @@ router.post(
     );
     return userControllers.createPatient(req, res, next);
   }
+);
+
+// change profile status
+router.patch(
+  "/:id/status",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  validateRequest(userValidationSchemas.updateProfileStatus),
+  userControllers.changeProfileStatus
 );
 
 export const UserRoutes = router;

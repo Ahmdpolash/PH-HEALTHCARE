@@ -9,7 +9,6 @@ import { userFilterableFields } from "./user.constant";
 
 //GET ALL USERS
 const getAllUsersFromDb = catchAsync(async (req: Request, res: Response) => {
-
   const filters = pick(req.query, userFilterableFields);
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
 
@@ -64,9 +63,25 @@ const createPatient: RequestHandler = catchAsync(
   }
 );
 
+//CHANGE PROFLE STATUS
+const changeProfileStatus: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await userServices.changeProfileStatus(id, req.body);
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Profile status changed successfully!",
+      data: result,
+    });
+  }
+);
+
 export const userControllers = {
   createAdmin,
   createDoctor,
   createPatient,
   getAllUsersFromDb,
+  changeProfileStatus,
 };

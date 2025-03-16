@@ -65,4 +65,11 @@ router.patch(
   userControllers.changeProfileStatus
 );
 
+//get my profile route
+router.get(
+  "/me",
+  auth(UserRole.ADMIN, UserRole.SUPER_ADMIN, UserRole.PATIENT, UserRole.DOCTOR),
+  userControllers.getMyProfile
+);
+
 export const UserRoutes = router;

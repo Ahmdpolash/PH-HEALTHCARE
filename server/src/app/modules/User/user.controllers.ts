@@ -6,6 +6,7 @@ import httpStatus from "http-status";
 
 import pick from "../../../shared/pick";
 import { userFilterableFields } from "./user.constant";
+import { IAuthUser } from "../../interface/common";
 
 //GET ALL USERS
 const getAllUsersFromDb = catchAsync(async (req: Request, res: Response) => {
@@ -80,10 +81,10 @@ const changeProfileStatus: RequestHandler = catchAsync(
 
 //GET MY PROFILE
 const getMyProfile: RequestHandler = catchAsync(
-  async (req: Request & { user?: any }, res: Response) => {
+  async (req: Request & { user?: IAuthUser }, res: Response) => {
     const user = req.user;
 
-    const result = await userServices.getMyProfile(user);
+    const result = await userServices.getMyProfile(user as IAuthUser);
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -96,18 +97,19 @@ const getMyProfile: RequestHandler = catchAsync(
 
 //update profile
 
-const updateMyProfile: RequestHandler = catchAsync(async (req, res) => {
-  const user = req.user;
+const updateMyProfile: RequestHandler = catchAsync(
+  async (req: Request & { user?: IAuthUser }, res) => {
+    const user = req.user;
+    const result = await userServices.updateMyProfile(user as IAuthUser, req);
 
-  const result = await userServices.updateMyProfile(user, req);
-
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Profile updated successfully!",
-    data: result,
-  });
-});
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: "Profile updated successfully!",
+      data: result,
+    });
+  }
+);
 
 export const userControllers = {
   createAdmin,

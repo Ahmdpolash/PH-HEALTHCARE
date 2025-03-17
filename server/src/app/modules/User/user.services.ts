@@ -8,6 +8,7 @@ import { IPaginationOptions } from "../../interface/pagination";
 import { paginationHelper } from "../../../helper/paginationHelper";
 import { userSearchAbleFields } from "./user.constant";
 import { IFile } from "../../interface/file";
+import { IAuthUser } from "../../interface/common";
 
 //GET ALL USERS
 const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
@@ -208,10 +209,10 @@ const changeProfileStatus = async (id: string, status: UserStatus) => {
 };
 
 //GET MY PROFILE
-const getMyProfile = async (user: any) => {
+const getMyProfile = async (user: IAuthUser) => {
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {
-      email: user.email,
+      email: user?.email,
       status: UserStatus.ACTIVE,
     },
     select: {
@@ -227,25 +228,25 @@ const getMyProfile = async (user: any) => {
   if (userInfo?.role === UserRole.ADMIN) {
     profileInfo = await prisma.admin.findUnique({
       where: {
-        email: user.email,
+        email: user?.email,
       },
     });
   } else if (userInfo?.role === UserRole.SUPER_ADMIN) {
     profileInfo = await prisma.admin.findUnique({
       where: {
-        email: user.email,
+        email: user?.email,
       },
     });
   } else if (userInfo?.role === UserRole.DOCTOR) {
     profileInfo = await prisma.doctor.findUnique({
       where: {
-        email: user.email,
+        email: user?.email,
       },
     });
   } else if (userInfo?.role === UserRole.PATIENT) {
     profileInfo = await prisma.patient.findUnique({
       where: {
-        email: user.email,
+        email: user?.email,
       },
     });
   }
@@ -274,7 +275,7 @@ const getMyProfile = async (user: any) => {
 
 // update profile
 
-const updateMyProfile = async (user: any, req: Request) => {
+const updateMyProfile = async (user: IAuthUser, req: Request) => {
   // upload image on cloudinary
   const file = req.file as IFile;
 
@@ -286,7 +287,7 @@ const updateMyProfile = async (user: any, req: Request) => {
   // find user
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {
-      email: user.email,
+      email: user?.email,
       status: UserStatus.ACTIVE,
     },
   });
@@ -296,28 +297,28 @@ const updateMyProfile = async (user: any, req: Request) => {
   if (userInfo?.role === UserRole.ADMIN) {
     profileInfo = await prisma.admin.update({
       where: {
-        email: user.email,
+        email: user?.email,
       },
       data: req.body,
     });
   } else if (userInfo?.role === UserRole.SUPER_ADMIN) {
     profileInfo = await prisma.admin.update({
       where: {
-        email: user.email,
+        email: user?.email,
       },
       data: req.body,
     });
   } else if (userInfo?.role === UserRole.DOCTOR) {
     profileInfo = await prisma.doctor.update({
       where: {
-        email: user.email,
+        email: user?.email,
       },
       data: req.body,
     });
   } else if (userInfo?.role === UserRole.PATIENT) {
     profileInfo = await prisma.patient.update({
       where: {
-        email: user.email,
+        email: user?.email,
       },
       data: req.body,
     });

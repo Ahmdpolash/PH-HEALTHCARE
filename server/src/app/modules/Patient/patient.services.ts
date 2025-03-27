@@ -144,7 +144,7 @@ const updateIntoDb = async (id: string, payload: Partial<IPatientUpdate>) => {
 };
 
 const deleteFromDB = async (id: string) => {
-  const result = await prisma.$transaction(async (trx) => {
+  await prisma.$transaction(async (trx) => {
     await trx.medicalReport.deleteMany({
       where: {
         patientId: id,

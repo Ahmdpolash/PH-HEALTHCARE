@@ -15,7 +15,8 @@ router.post(
   "/create-specialites",
   fileUploader.upload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
-    req.body = SpecialtiesValidtaion.create.parse(JSON.parse(req.body.data));
+    req.body = JSON.parse(req.body.data);
+    console.log(req.body);
     return SpecialitiesControllers.createSpecialities(req, res, next);
   }
 );

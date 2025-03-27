@@ -9,6 +9,8 @@ router.get("/", DoctorControllers.getAllDoctorFromDb);
 
 router.get("/:id", DoctorControllers.getByIdFromDb);
 
+router.patch("/:id", DoctorControllers.updateDoctor);
+
 router.delete("/:id", DoctorControllers.deleteById);
 
 router.delete("/soft/:id", DoctorControllers.softDeleteById);

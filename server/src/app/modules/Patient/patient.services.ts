@@ -2,7 +2,7 @@ import { Patient, Prisma, UserStatus } from "@prisma/client";
 import prisma from "../../../shared/prisma";
 import { patientSearchableFields } from "./doctor.constant";
 import { paginationHelper } from "../../../helper/paginationHelper";
-import { IPatientFilterRequest } from "./patient.interface";
+import { IPatientFilterRequest, IPatientUpdate } from "./patient.interface";
 import { IPaginationOptions } from "../../interface/pagination";
 
 const getAllFromDB = async (
@@ -86,6 +86,63 @@ const getByIdFromDB = async (id: string): Promise<Patient | null> => {
   return result;
 };
 
+const updateIntoDb = async (id: string, payload: Partial<IPatientUpdate>) => {
+  const { PatientHealthData, MedicalReport, ...patientData } = payload;
+
+  const patientInfo = await prisma.patient.findUniqueOrThrow({
+    where: {
+      id,
+      isDeleted: false,
+    },
+  });
+
+  await prisma.$transaction(async (trx) => {
+    //update patient data
+    await trx.patient.update({
+      where: {
+        id,
+      },
+      data: patientData,
+      include: {
+        MedicalReport: true,
+        PatientHealthData: true,
+      },
+    });
+
+    // create or update patient health data
+
+    if (PatientHealthData) {
+      await trx.patientHealthData.upsert({
+        where: {
+          patientId: patientInfo.id,
+        },
+        update: PatientHealthData,
+        create: { ...PatientHealthData, patientId: patientInfo.id },
+      });
+    }
+
+    // update patient medical report
+
+    if (MedicalReport) {
+      await trx.medicalReport.create({
+        data: { ...MedicalReport, patientId: patientInfo.id },
+      });
+    }
+
+    const responseData = await prisma.patient.findUnique({
+      where: {
+        id: patientInfo.id,
+      },
+      include: {
+        PatientHealthData: true,
+        MedicalReport: true,
+      },
+    });
+
+    return responseData;
+  });
+};
+
 const deleteFromDB = async (id: string) => {
   const result = await prisma.$transaction(async (trx) => {
     await trx.medicalReport.deleteMany({
@@ -143,7 +200,7 @@ const softDelete = async (id: string): Promise<Patient | null> => {
 export const PatientService = {
   getAllFromDB,
   getByIdFromDB,
-
+  updateIntoDb,
   deleteFromDB,
   softDelete,
 };

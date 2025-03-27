@@ -34,6 +34,6 @@ export type IPatientUpdate = {
   name: string;
   contactNumber: string;
   address: string;
-  patientHealthData: IPatientHealthData;
-  medicalReport: IMedicalReport;
+  PatientHealthData: IPatientHealthData;
+  MedicalReport: IMedicalReport;
 };

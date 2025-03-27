@@ -11,7 +11,7 @@ const getAllDoctorFromDb = async (
   options: IPaginationOptions
 ) => {
   const { limit, page, skip } = paginationHelper.calculatePagination(options);
-  const { searchTerm, ...filterData } = params;
+  const { searchTerm,specialities, ...filterData } = params;
 
   const andConditions: Prisma.DoctorWhereInput[] = [];
 
@@ -26,6 +26,24 @@ const getAllDoctorFromDb = async (
       })),
     });
   }
+
+
+  // filter by specialties 
+  if (specialities && specialities.length > 0) {
+    andConditions.push({
+      doctorSpecialities: {
+        some: {
+          specialities: {
+            title: {
+              contains: specialities,
+              mode: "insensitive",
+            }
+          }
+        }
+      }
+    })
+  }
+
 
   //filter
 
@@ -58,6 +76,13 @@ const getAllDoctorFromDb = async (
         : {
             createdAt: "desc",
           },
+    include: {
+      doctorSpecialities: {
+        include: {
+          specialities: true,
+        },
+      },
+    },
   });
   const total = await prisma.doctor.count({
     where: whereConditions,
@@ -185,7 +210,7 @@ const updateDoctor = async (id: string, payload: IDoctorUpdate) => {
       );
 
       for (const specialty of createSpecialtiesIds) {
-         await transactionClient.doctorSpecialties.create({
+        await transactionClient.doctorSpecialties.create({
           data: {
             doctorId: doctorInfo.id,
             specialitiesId: specialty.specialitiesId,
@@ -207,10 +232,9 @@ const updateDoctor = async (id: string, payload: IDoctorUpdate) => {
       },
     },
   });
-  console.log(result)
-  
+  console.log(result);
+
   return result;
- 
 };
 
 export const DoctorServices = {

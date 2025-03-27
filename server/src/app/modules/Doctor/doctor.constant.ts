@@ -13,5 +13,5 @@ export const doctorFilterableFields: string[] = [
     'contactNumber',
     'gender',
     'apointmentFee',
-    'specialties'
+    'specialities'
 ];

@@ -1,8 +1,9 @@
 import { addHours, addMinutes, format } from "date-fns";
 import prisma from "../../../shared/prisma";
 import ApiError from "../../error/ApiError";
+import { ISchedule } from "./schedule.interface";
 
-const inserIntoDB = async (payload: any) => {
+const inserIntoDB = async (payload: ISchedule) => {
   const { startDate, endDate, startTime, endTime } = payload;
 
   const interverlTime = 30;
@@ -12,17 +13,25 @@ const inserIntoDB = async (payload: any) => {
   const lastDate = new Date(endDate);
 
   while (currentDate <= lastDate) {
+    // 09:30  ---> ['09', '30']
+
     const startDateTime = new Date(
-      addHours(
-        `${format(currentDate, "yyyy-MM-dd")}`,
-        Number(startTime.split(":")[0])
+      addMinutes(
+        addHours(
+          `${format(currentDate, "yyyy-MM-dd")}`,
+          Number(startTime.split(":")[0])
+        ),
+        Number(startTime.split(":")[1])
       )
     );
 
     const endDateTime = new Date(
-      addHours(
-        `${format(currentDate, "yyyy-MM-dd")}`,
-        Number(endTime.split(":")[0])
+      addMinutes(
+        addHours(
+          `${format(currentDate, "yyyy-MM-dd")}`,
+          Number(endTime.split(":")[0])
+        ),
+        Number(endTime.split(":")[1])
       )
     );
 

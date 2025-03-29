@@ -12,11 +12,11 @@ const router = express.Router();
  *
  * Get all doctor schedule with filtering
  */
-// router.get(
-//     '/',
-//     auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT),
-//     DoctorScheduleController.getAllFromDB
-// );
+router.get(
+  "/",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR, UserRole.PATIENT),
+  DoctorScheduleController.getAllFromDB
+);
 
 router.get(
   "/my-schedule",
@@ -32,9 +32,9 @@ router.post(
 );
 
 router.delete(
-    '/:id',
-    auth(UserRole.DOCTOR),
-    DoctorScheduleController.deleteFromDB
+  "/:id",
+  auth(UserRole.DOCTOR),
+  DoctorScheduleController.deleteFromDB
 );
 
 export const DoctorScheduleRoutes = router;

@@ -28,6 +28,26 @@ const insertIntoDB = catchAsync(
 
 // get doctor schedule
 
+const getAllFromDB: RequestHandler = catchAsync(
+  async (req: Request & { user?: IAuthUser }, res: Response) => {
+    const filters = pick(req.query, scheduleFilterableFields);
+    const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+
+    const user = req.user;
+    const result = await DoctorScheduleService.getMySchedule(
+      filters,
+      options,
+      user
+    );
+
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: " Schedule retrieved successfully",
+      data: result,
+    });
+  }
+);
 const getMySchedule: RequestHandler = catchAsync(
   async (req: Request & { user?: IAuthUser }, res: Response) => {
     const filters = pick(req.query, scheduleFilterableFields);
@@ -74,4 +94,5 @@ export const DoctorScheduleController = {
   insertIntoDB,
   getMySchedule,
   deleteFromDB,
+  getAllFromDB,
 };

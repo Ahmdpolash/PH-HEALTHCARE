@@ -5,7 +5,7 @@ import { IFilterRequest, ISchedule } from "./schedule.interface";
 import { IPatientFilterRequest } from "../Patient/patient.interface";
 import { IPaginationOptions } from "../../interface/pagination";
 import { paginationHelper } from "../../../helper/paginationHelper";
-import { Prisma } from "@prisma/client";
+import { Prisma, Schedule } from "@prisma/client";
 
 const inserIntoDB = async (payload: ISchedule) => {
   const { startDate, endDate, startTime, endTime } = payload;
@@ -158,7 +158,28 @@ const getAllFromDB = async (
   };
 };
 
+const getScheduleById = async (id: string) => {
+  const result = await prisma.schedule.findUniqueOrThrow({
+    where: {
+      id,
+    },
+  });
+
+  return result;
+};
+
+const deleteFromDB = async (id: string): Promise<Schedule> => {
+  const result = await prisma.schedule.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const ScheduleService = {
   inserIntoDB,
   getAllFromDB,
+  deleteFromDB,
+  getScheduleById,
 };

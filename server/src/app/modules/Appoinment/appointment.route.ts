@@ -5,7 +5,14 @@ import { UserRole } from "@prisma/client";
 
 const router = Router();
 
-// create schedule route
+// get my appointment route
+router.get(
+  "/my-appointment",
+  auth(UserRole.PATIENT,UserRole.DOCTOR),
+  AppointmentControllers.getMyAppointment
+);
+
+// create appointment route
 router.post(
   "/",
   auth(UserRole.PATIENT),

@@ -31,8 +31,6 @@ export const auth = (...roles: string[]) => {
           throw new ApiError(httpStatus.FORBIDDEN, "Forbidden");
         }
 
-        
-
         next();
       } catch (error) {
         next(error);

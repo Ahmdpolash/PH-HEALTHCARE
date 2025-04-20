@@ -53,6 +53,28 @@ const createAppointment = async (user: IAuthUser, payload: any) => {
       },
     });
 
+    // PH-HealthCare-datatime
+    const today = new Date();
+
+    const transactionId =
+      "PH-HealthCare-" +
+      today.getFullYear() +
+      "-" +
+      today.getMonth() +
+      "-" +
+      today.getDay() +
+      "-" +
+      today.getHours() +
+      "-" +
+      today.getMinutes();
+
+    await trx.payment.create({
+      data: {
+        appointmentId: appointmentData.id,
+        amount: doctorData.appointmentFee,
+        transactionId,
+      },
+    });
 
     return appointmentData;
   });

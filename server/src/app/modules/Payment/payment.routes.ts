@@ -4,7 +4,7 @@ import { PaymentController } from "./payment.controller";
 const router = Router();
 
 
-router.post('/init-payment', PaymentController.initPayment)
+router.post('/init-payment/:appointmentId', PaymentController.initPayment)
 
 
 

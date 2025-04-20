@@ -6,6 +6,8 @@ const router = Router();
 
 router.post('/init-payment/:appointmentId', PaymentController.initPayment)
 
+router.get('/ipn', PaymentController.validatePayment)
+
 
 
 

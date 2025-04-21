@@ -4,6 +4,7 @@ import sendResponse from "../../../shared/sentResponse";
 import httpStatus from "http-status";
 import { PrescriptionServices } from "./prescription.services";
 import pick from "../../../shared/pick";
+import { prescriptionFilterableFields } from "./prescription.constant";
 
 const createPrescription: RequestHandler = catchAsync(async (req, res) => {
   const user = req.user;
@@ -20,7 +21,9 @@ const createPrescription: RequestHandler = catchAsync(async (req, res) => {
 const patientPrescription = catchAsync(async (req, res) => {
   const user = req.user;
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
-  const result = await PrescriptionServices.patientPrescription(user, options);
+  const filters = pick(req.query, prescriptionFilterableFields);
+
+  const result = await PrescriptionServices.patientPrescription(user, options,filters);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

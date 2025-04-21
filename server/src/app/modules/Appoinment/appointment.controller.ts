@@ -50,8 +50,23 @@ const getAllAppointment: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const changeAppointmentStatus = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body
+  const user = req.user
+  const result = await AppointmentServices.changeAppointmentStatus(id,status,user);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Appointment status changed successfully!",
+    data: result,
+  });
+});
+
 export const AppointmentControllers = {
   createAppointment,
   getMyAppointment,
   getAllAppointment,
+  changeAppointmentStatus,
 };

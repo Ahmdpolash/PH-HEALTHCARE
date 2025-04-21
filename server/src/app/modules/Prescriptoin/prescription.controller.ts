@@ -3,10 +3,7 @@ import { catchAsync } from "../../../shared/catchAsync";
 import sendResponse from "../../../shared/sentResponse";
 import httpStatus from "http-status";
 import { PrescriptionServices } from "./prescription.services";
-
-
-
-
+import pick from "../../../shared/pick";
 
 const createPrescription: RequestHandler = catchAsync(async (req, res) => {
   const user = req.user;
@@ -20,6 +17,21 @@ const createPrescription: RequestHandler = catchAsync(async (req, res) => {
   });
 });
 
+const patientPrescription = catchAsync(async (req, res) => {
+  const user = req.user;
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const result = await PrescriptionServices.patientPrescription(user, options);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Prescription retrived successfully!",
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 export const PrescriptionControllers = {
   createPrescription,
+  patientPrescription,
 };

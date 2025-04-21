@@ -44,10 +44,13 @@ const getAllFromDB: RequestHandler = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: " Schedule retrieved successfully",
-      data: result,
+      meta: result.meta,
+      data: result.data,
     });
   }
 );
+
+
 const getMySchedule: RequestHandler = catchAsync(
   async (req: Request & { user?: IAuthUser }, res: Response) => {
     const filters = pick(req.query, scheduleFilterableFields);
@@ -64,7 +67,8 @@ const getMySchedule: RequestHandler = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "My Schedule retrieved successfully",
-      data: result,
+      meta: result.meta,
+      data: result.data,
     });
   }
 );

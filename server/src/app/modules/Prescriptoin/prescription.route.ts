@@ -7,11 +7,18 @@ import { PrescriptionValidation } from "./prescription.validation";
 
 const router = Router();
 
+// get appointment route
+router.get(
+  "/my-prescription",
+  auth(UserRole.PATIENT),
+  PrescriptionControllers.patientPrescription
+);
+
 // create appointment route
 router.post(
   "/",
   auth(UserRole.DOCTOR),
-  // validateRequest(PrescriptionValidation.create),
+  validateRequest(PrescriptionValidation.create),
   PrescriptionControllers.createPrescription
 );
 

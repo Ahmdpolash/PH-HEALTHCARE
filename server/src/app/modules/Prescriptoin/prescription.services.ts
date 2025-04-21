@@ -14,7 +14,6 @@ import httpStatus from "http-status";
 import ApiError from "../../error/ApiError";
 
 const createPrescipton = async (user: IAuthUser, payload: any) => {
-
   const appointmentData = await prisma.appointment.findUniqueOrThrow({
     where: {
       id: payload.appointmentId,
@@ -25,8 +24,6 @@ const createPrescipton = async (user: IAuthUser, payload: any) => {
       doctor: true,
     },
   });
-
-
 
   if (!(user?.email === appointmentData.doctor.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, "This is not your appointment!");
@@ -48,60 +45,37 @@ const createPrescipton = async (user: IAuthUser, payload: any) => {
   return result;
 };
 
-// get all appointment
-
-const getAllAppointment = async (filters: any, options: IPaginationOptions) => {
+const patientPrescription = async (
+  user: IAuthUser,
+  options: IPaginationOptions
+) => {
   const { limit, page, skip } = paginationHelper.calculatePagination(options);
-  const { patientEmail, doctorEmail, ...filterData } = filters;
-  const andConditions = [];
 
-  if (patientEmail) {
-    andConditions.push({
+  const result = await prisma.prescription.findMany({
+    where: {
       patient: {
-        email: patientEmail,
+        email: user?.email,
       },
-    });
-  } else if (doctorEmail) {
-    andConditions.push({
-      doctor: {
-        email: doctorEmail,
-      },
-    });
-  }
-
-  if (Object.keys(filterData).length > 0) {
-    andConditions.push({
-      AND: Object.keys(filterData).map((key) => {
-        return {
-          [key]: {
-            equals: (filterData as any)[key],
-          },
-        };
-      }),
-    });
-  }
-
-  // console.dir(andConditions, { depth: Infinity })
-  const whereConditions: Prisma.AppointmentWhereInput =
-    andConditions.length > 0 ? { AND: andConditions } : {};
-
-  const result = await prisma.appointment.findMany({
-    where: whereConditions,
+    },
     skip,
     take: limit,
     orderBy:
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
-        : {
-            createdAt: "desc",
-          },
+        : { createdAt: "desc" },
     include: {
       doctor: true,
       patient: true,
+      appointment: true,
     },
   });
-  const total = await prisma.appointment.count({
-    where: whereConditions,
+
+  const total = await prisma.prescription.count({
+    where: {
+      patient: {
+        email: user?.email,
+      },
+    },
   });
 
   return {
@@ -114,8 +88,9 @@ const getAllAppointment = async (filters: any, options: IPaginationOptions) => {
   };
 };
 
+// get prescription
+
 export const PrescriptionServices = {
   createPrescipton,
-
-  getAllAppointment,
+  patientPrescription,
 };

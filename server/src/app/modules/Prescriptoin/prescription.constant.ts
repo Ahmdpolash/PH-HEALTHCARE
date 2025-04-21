@@ -1,6 +1,4 @@
-export const appointmentFilterableFields: string[] = [
-  "status",
-  "paymentStatus",
+export const prescriptionFilterableFields: string[] = [
   "patientEmail",
   "doctorEmail",
 ];

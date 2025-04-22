@@ -83,8 +83,7 @@ const patientPrescription = async (
 
   const whereConditions: Prisma.PrescriptionWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
-  
-  
+
   const result = await prisma.prescription.findMany({
     where: whereConditions,
     skip,
@@ -99,7 +98,6 @@ const patientPrescription = async (
       appointment: true,
     },
   });
-  
 
   // const result = await prisma.prescription.findMany({
   //   where: {

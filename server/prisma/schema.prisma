@@ -49,6 +49,7 @@ model Doctor {
   contactNumber       String
   address             String?
   registrationNumber  String
+  averageRating       Float    @default(0.0)
   experience          Int      @default(0)
   gender              Gender
   appointmentFee      Int

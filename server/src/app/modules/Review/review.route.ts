@@ -7,8 +7,7 @@ import { ReviewValidation } from "./review.validation";
 import validateRequest from "../../middleware/validateRequest";
 
 const router = Router();
-router.get('/', ReviewControllers.getAllFromDB);
-
+router.get("/", ReviewControllers.getAllFromDB);
 
 // create review route
 router.post(

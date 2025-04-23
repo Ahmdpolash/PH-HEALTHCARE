@@ -1,0 +1,44 @@
+Query: SELECT "public"."appointments"."id", "public"."appointments"."patientId", "public"."appointments"."doctorId", "public"."appointments"."scheduleId", "public"."appointments"."videoCallingId", "public"."appointments"."status"::text, "public"."appointments"."paymentStatus"::text, "public"."appointments"."createdAt", "public"."appointments"."updatedAt" FROM "public"."appointments" WHERE ("public"."appointments"."createdAt" <= $1 AND "public"."appointments"."paymentStatus" = CAST($2::text AS "public"."PaymentStatus")) OFFSET $3 
+ Params: ["2025-04-23 13:37:00.838 UTC","UNPAID",0] 
+ Duration: 8ms 
+
+Query: BEGIN 
+ Params: [] 
+ Duration: 0ms 
+
+Query: DELETE FROM "public"."payments" WHERE 1=0 
+ Params: [] 
+ Duration: 6ms 
+
+Query: DELETE FROM "public"."appointments" WHERE 1=0 
+ Params: [] 
+ Duration: 1ms 
+
+Query: COMMIT 
+ Params: [] 
+ Duration: 0ms 
+
+Query: SELECT 1 
+ Params: [] 
+ Duration: 13ms 
+
+Query: SELECT "public"."appointments"."id", "public"."appointments"."patientId", "public"."appointments"."doctorId", "public"."appointments"."scheduleId", "public"."appointments"."videoCallingId", "public"."appointments"."status"::text, "public"."appointments"."paymentStatus"::text, "public"."appointments"."createdAt", "public"."appointments"."updatedAt" FROM "public"."appointments" WHERE ("public"."appointments"."createdAt" <= $1 AND "public"."appointments"."paymentStatus" = CAST($2::text AS "public"."PaymentStatus")) OFFSET $3 
+ Params: ["2025-04-23 13:38:00.288 UTC","UNPAID",0] 
+ Duration: 0ms 
+
+Query: BEGIN 
+ Params: [] 
+ Duration: 0ms 
+
+Query: DELETE FROM "public"."payments" WHERE 1=0 
+ Params: [] 
+ Duration: 0ms 
+
+Query: DELETE FROM "public"."appointments" WHERE 1=0 
+ Params: [] 
+ Duration: 0ms 
+
+Query: COMMIT 
+ Params: [] 
+ Duration: 0ms 
+

@@ -1,6 +1,7 @@
 import { UserRole } from "@prisma/client";
-import prisma from "../src/shared/prisma";
+
 import bcrypt from "bcrypt";
+import prisma from "../../shared/prisma";
 // make super admin
 
 const seedSuperAdmin = async () => {
@@ -39,6 +40,5 @@ const seedSuperAdmin = async () => {
     await prisma.$disconnect();
   }
 };
-
 
 seedSuperAdmin();

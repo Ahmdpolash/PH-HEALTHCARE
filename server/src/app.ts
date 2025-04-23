@@ -16,6 +16,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// delete unpaid payment
 cron.schedule("* * * * *", () => {
   try {
     AppointmentServices.cancelUnpaidAppointment();

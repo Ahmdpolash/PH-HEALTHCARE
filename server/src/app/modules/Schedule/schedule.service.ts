@@ -7,6 +7,11 @@ import { IPaginationOptions } from "../../interface/pagination";
 import { paginationHelper } from "../../../helper/paginationHelper";
 import { Prisma, Schedule } from "@prisma/client";
 
+const convertDateTime = async (date: Date) => {
+  const offset = date.getTimezoneOffset() * 60000;
+  return new Date(date.getTime() + offset);
+};
+
 const inserIntoDB = async (payload: ISchedule) => {
   const { startDate, endDate, startTime, endTime } = payload;
 
@@ -40,9 +45,17 @@ const inserIntoDB = async (payload: ISchedule) => {
     );
 
     while (startDateTime < endDateTime) {
+      // const scheduleData = {
+      //   startDateTime: startDateTime,
+      //   endDateTime: addMinutes(startDateTime, interverlTime),
+      // };
+
+      const s = await convertDateTime(startDateTime);
+      const e = await convertDateTime(addMinutes(startDateTime, interverlTime));
+
       const scheduleData = {
-        startDateTime: startDateTime,
-        endDateTime: addMinutes(startDateTime, interverlTime),
+        startDateTime: s,
+        endDateTime: e,
       };
 
       const existingSchedule = await prisma.schedule.findFirst({
@@ -164,7 +177,7 @@ const getScheduleById = async (id: string) => {
       id,
     },
   });
-
+  //console.log(result?.startDateTime.getHours() + ":" + result?.startDateTime.getMinutes())
   return result;
 };
 

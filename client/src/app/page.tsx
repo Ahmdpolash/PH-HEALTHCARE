@@ -5,7 +5,7 @@ export default function Home() {
   return (
     <div>
       <h1>Home page</h1>
-      <Button variant="contained">Text</Button>
+      <Button>Text</Button>
    </div>
   )
 }

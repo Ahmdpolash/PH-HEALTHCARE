@@ -7,7 +7,8 @@
     "start:dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "seed": "nodemon ./src/app/utils/seed.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prod": "node ./dist/server.js",
+    "prod": "NODE_ENV=production node ./dist/server.js",
+  
     "watch": "tsc --w",
     "studio": "npx prisma studio",
     "build": "tsc"

@@ -11,23 +11,26 @@ const Specialist = async () => {
 
   return (
     <Container>
-      <Box sx={{ margin: "40px 0" }}>
-        <Box>
+      <Box
+        sx={{
+          margin: "80px 0px",
+          textAlign: "center",
+        }}
+      >
+        <Box
+          sx={{
+            textAlign: "start",
+          }}
+        >
           <Typography variant="h4" fontWeight={600}>
             Explore Treatments Across Specialties
           </Typography>
-          <Typography
-            color="gray"
-            component="p"
-            fontWeight={300}
-            fontSize={18}
-            mt={1}
-          >
-            Find Experienced Doctors Across All Specialties
+          <Typography component="p" fontWeight={300} fontSize={18} mt={1}>
+            Experienced Doctors Across All Specialties
           </Typography>
         </Box>
         <Stack direction="row" gap={4} mt={5}>
-          {data?.map((specialty: any) => (
+          {data.map((specialty: any) => (
             <Box
               key={specialty.id}
               sx={{
@@ -53,28 +56,22 @@ const Specialist = async () => {
             >
               <Image
                 src={specialty.icon}
-                // src={assets.images.doctor1}
                 width={100}
                 height={100}
-                alt={specialty.title}
+                alt="specialty icon"
               />
               <Box>
-                <Typography component="p" fontWeight={600} fontSize={16} mt={2}>
+                <Typography component="p" fontWeight={600} fontSize={18} mt={2}>
                   {specialty.title}
                 </Typography>
               </Box>
             </Box>
           ))}
-        </Stack>{" "}
+        </Stack>
         <Button
           variant="outlined"
           sx={{
             marginTop: "20px",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-
-            textAlign: "center",
           }}
         >
           View ALL

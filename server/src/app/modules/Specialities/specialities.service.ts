@@ -5,8 +5,6 @@ import { IFile } from "../../interface/file";
 
 // Create a new speciality in the database.
 const createSpecialities = async (req: Request) => {
-
-
   const file = req.file as IFile;
   if (file) {
     const uploadIntoCloudinary = await fileUploader.uploadToCloudinary(file);
@@ -43,4 +41,3 @@ export const SpecialitiesService = {
   getSpecialities,
   deleteSpeciality,
 };
-deleteSpeciality;

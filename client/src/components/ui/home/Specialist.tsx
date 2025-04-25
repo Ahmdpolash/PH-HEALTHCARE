@@ -1,8 +1,14 @@
-import assets from "@/assets";
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 
-const Specialist = () => {
+const Specialist = async () => {
+  const res = await fetch("http://localhost:5000/api/v1/specialties", {
+    next: {
+      revalidate: 30,
+    },
+  });
+  const { data } = await res.json();
+
   return (
     <Container>
       <Box sx={{ margin: "40px 0" }}>
@@ -21,9 +27,9 @@ const Specialist = () => {
           </Typography>
         </Box>
         <Stack direction="row" gap={4} mt={5}>
-          {[1, 2, 3, 4, 5, 6].map((specialty: any) => (
+          {data?.map((specialty: any) => (
             <Box
-              // key={specialty.id}
+              key={specialty.id}
               sx={{
                 flex: 1,
                 width: "150px",
@@ -46,15 +52,15 @@ const Specialist = () => {
               }}
             >
               <Image
-                //   src={specialty.icon}
-                src={assets.images.doctor1}
+                src={specialty.icon}
+                // src={assets.images.doctor1}
                 width={100}
                 height={100}
-                alt="specialty icon"
+                alt={specialty.title}
               />
               <Box>
                 <Typography component="p" fontWeight={600} fontSize={16} mt={2}>
-                  CardioLogy
+                  {specialty.title}
                 </Typography>
               </Box>
             </Box>
@@ -67,6 +73,7 @@ const Specialist = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+
             textAlign: "center",
           }}
         >

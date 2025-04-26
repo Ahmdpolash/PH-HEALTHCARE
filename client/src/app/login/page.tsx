@@ -32,7 +32,6 @@ const Login = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-
   // submit handler
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
@@ -100,6 +99,7 @@ const Login = () => {
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     label="Password"
+                    type="password"
                     variant="outlined"
                     size="small"
                     fullWidth={true}

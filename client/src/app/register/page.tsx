@@ -1,6 +1,8 @@
 "use client";
 import assets from "@/assets";
+import { userLogin } from "@/services/actions/loginUser";
 import { registerPatient } from "@/services/actions/registerPatient";
+import { storedToken } from "@/services/auth.service";
 import { modifyPayload } from "@/utils/ModifyPayload";
 
 import {
@@ -47,8 +49,17 @@ const Register = () => {
 
     try {
       if (res?.success) {
-        toast.success(res?.message);
-        router.push("/login");
+        if (res?.data?.id) {
+          toast.success(res?.message);
+          const result = await userLogin({
+            password: values.password,
+            email: values.patient.email,
+          });
+          if (result?.data?.accessToken) {
+            storedToken(result?.data?.accessToken);
+            router.push("/");
+          }
+        }
       } else {
         toast.error(res?.message);
       }
@@ -135,6 +146,7 @@ const Register = () => {
                   <TextField
                     label="Password"
                     variant="outlined"
+                    type="password"
                     size="small"
                     fullWidth={true}
                     {...register("password", { required: true })}

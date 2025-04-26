@@ -21,7 +21,15 @@ const globalErrorHandler = (
       message = "Duplicate Key error";
       error = err.meta;
     }
+  } else if (
+    err.name === "JsonWebTokenError" ||
+    err.name === "TokenExpiredError"
+  ) {
+    message = "Invalid credentials";
+    error = err.message;
   }
+
+  // need to add findfirstorthrowerrror custom error message
 
   res.status(statusCode).json({
     success,

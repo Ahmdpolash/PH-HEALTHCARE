@@ -12,12 +12,16 @@ import { emailSender } from "../../utils/emailSender";
 
 // login
 const loginUser = async (payload: TLoginUser) => {
-  const user = await prisma.user.findUniqueOrThrow({
+  const user = await prisma.user.findUnique({
     where: {
       email: payload.email,
       status: UserStatus.ACTIVE,
     },
   });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User not Found!");
+  }
 
   // check valid password
   const isCorrectPassword = await bcrypt.compare(

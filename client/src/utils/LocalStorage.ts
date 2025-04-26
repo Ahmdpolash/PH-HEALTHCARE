@@ -1,4 +1,3 @@
-
 // set token in to localstorage
 
 export const setToLocalStorage = (key: string, token: string) => {
@@ -8,8 +7,6 @@ export const setToLocalStorage = (key: string, token: string) => {
   return localStorage.setItem(key, token);
 };
 
-
-
 // get token from localstorage
 export const getFromLocalStorage = (key: string) => {
   if (!key || typeof window === "undefined") {
@@ -17,8 +14,6 @@ export const getFromLocalStorage = (key: string) => {
   }
   return localStorage.getItem(key);
 };
-
-
 
 // remove token from localstorage
 export const removeFromLocalStorage = (key: string) => {

@@ -1,9 +1,12 @@
 "use client";
 import assets from "@/assets";
+import PhForm from "@/components/Forms/PhForm";
+import PHInput from "@/components/Forms/PhInput";
 import { userLogin } from "@/services/actions/loginUser";
 import { registerPatient } from "@/services/actions/registerPatient";
 import { storedToken } from "@/services/auth.service";
 import { modifyPayload } from "@/utils/ModifyPayload";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {
   Box,
@@ -17,32 +20,40 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
+
 import { toast } from "sonner";
+import { z } from "zod";
 
-type IPatientData = {
-  name: string;
-  email: string;
-  password: string;
-  address: string;
-  contactNumber: string;
+export const patientValidationSchema = z.object({
+  name: z.string().min(1, "Please enter your name!"),
+  email: z.string().email("Please enter a valid email address!"),
+  contactNumber: z
+    .string()
+    .regex(/^\d{11}$/, "Please provide a valid phone number!"),
+  address: z.string().min(1, "Please enter your address!"),
+});
+
+export const validationSchema = z.object({
+  password: z.string().min(6, "Must be at least 6 characters"),
+  patient: patientValidationSchema,
+});
+
+export const defaultValues = {
+  password: "",
+  patient: {
+    name: "",
+    email: "",
+    contactNumber: "",
+    address: "",
+  },
 };
-
-interface IPatientRegisterFormData {
-  password: string;
-  patient: IPatientData;
-}
 
 const Register = () => {
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IPatientRegisterFormData>();
-
-  const onSubmit: SubmitHandler<IPatientRegisterFormData> = async (values) => {
+  const handleRegister = async (values: FieldValues) => {
+    // make the values in formdata
     const data = modifyPayload(values);
 
     const res = await registerPatient(data);
@@ -111,70 +122,44 @@ const Register = () => {
           </Stack>
 
           <Box mt={2}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <PhForm
+              onSubmit={handleRegister}
+              resolver={zodResolver(validationSchema)}
+              defaultValues={defaultValues}
+            >
               <Grid container spacing={2} my={1}>
                 <Grid size={12}>
-                  <TextField
-                    label="Name"
-                    variant="outlined"
-                    size="small"
-                    fullWidth={true}
-                    {...register("patient.name", { required: true })}
-                  />
-                  {errors?.patient?.name && (
-                    <span className="grid text-start text-red-500">
-                      Name is Required
-                    </span>
-                  )}
+                  <PHInput label="Name" fullWidth={true} name="patient.name" />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
-                  <TextField
+                  <PHInput
                     label="Email"
-                    variant="outlined"
-                    size="small"
                     type="email"
                     fullWidth={true}
-                    {...register("patient.email", { required: true })}
+                    name="patient.email"
                   />
-                  {errors?.patient?.email && (
-                    <span className="grid text-start text-red-500">
-                      Email is Required
-                    </span>
-                  )}
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
-                  <TextField
+                  <PHInput
                     label="Password"
-                    variant="outlined"
                     type="password"
-                    size="small"
                     fullWidth={true}
-                    {...register("password", { required: true })}
+                    name="password"
                   />
-                  {errors?.patient?.password && (
-                    <span className="grid text-start text-red-500">
-                      Password is Required
-                    </span>
-                  )}
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
-                  <TextField
+                  <PHInput
                     label="Contact Number"
                     type="tel"
-                    variant="outlined"
-                    size="small"
                     fullWidth={true}
-                    {...register("patient.contactNumber")}
+                    name="patient.contactNumber"
                   />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
-                  <TextField
+                  <PHInput
                     label="Address"
-                    type="text"
-                    variant="outlined"
-                    size="small"
                     fullWidth={true}
-                    {...register("patient.address")}
+                    name="patient.address"
                   />
                 </Grid>
               </Grid>
@@ -190,7 +175,7 @@ const Register = () => {
               <Typography component="p" fontWeight={300}>
                 Do you already have an account? <Link href="/login">Login</Link>
               </Typography>
-            </form>
+            </PhForm>
           </Box>
         </Box>
       </Stack>

@@ -9,7 +9,12 @@ import { AppointmentServices } from "./app/modules/Appoinment/appointment.servic
 import cron from "node-cron";
 
 const app: Application = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 
 //parser

@@ -33,7 +33,9 @@ const BuyMedicine = () => {
               <p className="text-sm text-black-500 leading-[22px]">
                 *Conditions apply
               </p>
-              <Button sx={{ mt: 2 }} variant="contained">Buy Medicine</Button>
+              <Button sx={{ mt: 2 }} variant="contained">
+                Buy Medicine
+              </Button>
             </div>
           </div>
         </div>

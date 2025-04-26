@@ -21,7 +21,7 @@ const TopRatedDoctors = async () => {
       sx={{
         my: 4,
         py: 30,
-        backgroundColor: "rgba(20, 20, 20, 0.1)",
+        backgroundColor: "rgba(245, 245, 245,1)",
         clipPath: "polygon(0 0, 100% 25%, 100% 100%, 0 75%)",
       }}
     >

@@ -44,7 +44,15 @@ const WhyChoose = () => {
               Bangladesh leading healthcare app for online doctor consultation.
             </Typography>
             <Stack direction={"column"} gap={2} my={"19px"}>
-              <Box sx={{ display: "flex", gap: "8px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "8px",
+                  backgroundColor: "rgba(245, 245, 245,1)",
+                  padding: "15px",
+                  borderRadius: "10px 10px 100px 10px",
+                }}
+              >
                 <CheckCircleRounded
                   sx={{ color: "#8D65FC", fontSize: "35px" }}
                 />
@@ -53,7 +61,16 @@ const WhyChoose = () => {
                   anywhere.
                 </span>
               </Box>
-              <Box sx={{ display: "flex", gap: "8px" }}>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "8px",
+                  backgroundColor: "rgba(245, 245, 245,1)",
+                  padding: "15px",
+                  borderRadius: "10px 100px 10px 10px",
+                }}
+              >
                 <CheckCircleRounded
                   sx={{ color: "#60DF31", fontSize: "35px" }}
                 />
@@ -62,7 +79,15 @@ const WhyChoose = () => {
                   diagnostic tests.
                 </span>
               </Box>
-              <Box sx={{ display: "flex", gap: "8px" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "8px",
+                  backgroundColor: "rgba(245, 245, 245,1)",
+                  padding: "15px",
+                  borderRadius: "10px 10px 100px 10px",
+                }}
+              >
                 <CheckCircleRounded
                   sx={{ color: "#40B4FA", fontSize: "35px" }}
                 />

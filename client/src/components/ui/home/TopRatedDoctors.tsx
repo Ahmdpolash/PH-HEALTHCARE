@@ -10,17 +10,16 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import Grid from "@mui/material/Grid";
-import assets from "@/assets";
 
+import assets from "@/assets";
 const TopRatedDoctors = async () => {
   const res = await fetch("http://localhost:5000/api/v1/doctor?page=1&limit=3");
   const { data: doctors } = await res.json();
-  console.log(doctors);
+
   return (
     <Box
       sx={{
-        my: 10,
+        my: 4,
         py: 30,
         backgroundColor: "rgba(20, 20, 20, 0.1)",
         clipPath: "polygon(0 0, 100% 25%, 100% 100%, 0 75%)",

@@ -1,3 +1,4 @@
+import BuyMedicine from "@/components/ui/home/BuyMedicine";
 import Hero from "@/components/ui/home/Hero";
 import Specialist from "@/components/ui/home/Specialist";
 import TopRatedDoctors from "@/components/ui/home/TopRatedDoctors";
@@ -11,6 +12,7 @@ export default function Home() {
       <Specialist />
       <TopRatedDoctors />
       <WhyChoose />
+      <BuyMedicine />
     </div>
   );
 }

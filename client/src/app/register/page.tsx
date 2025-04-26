@@ -1,5 +1,8 @@
 "use client";
 import assets from "@/assets";
+import { registerPatient } from "@/services/actions/registerPatient";
+import { modifyPayload } from "@/utils/ModifyPayload";
+
 import {
   Box,
   Button,
@@ -11,7 +14,9 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 
 type IPatientData = {
   name: string;
@@ -27,14 +32,30 @@ interface IPatientRegisterFormData {
 }
 
 const Register = () => {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<IPatientRegisterFormData>();
-  const onSubmit: SubmitHandler<IPatientRegisterFormData> = (data) =>
-    console.log(data);
+
+  const onSubmit: SubmitHandler<IPatientRegisterFormData> = async (values) => {
+    const data = modifyPayload(values);
+
+    const res = await registerPatient(data);
+    console.log(res);
+    try {
+      if (res?.success) {
+        toast.success(res?.message);
+        router.push("/login");
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (error: any) {
+      toast.error("Something went wrong!");
+    }
+  };
 
   return (
     <Container>
@@ -62,7 +83,14 @@ const Register = () => {
             }}
           >
             <Box>
-              <Image src={assets.svgs.logo} width={50} height={50} alt="logo" />
+              <Link className="cursor-pointer" href="/">
+                <Image
+                  src={assets.svgs.logo}
+                  width={50}
+                  height={50}
+                  alt="logo"
+                />
+              </Link>
             </Box>
             <Box>
               <Typography variant="h6" fontWeight={600}>

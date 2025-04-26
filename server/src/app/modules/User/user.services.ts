@@ -9,7 +9,8 @@ import { paginationHelper } from "../../../helper/paginationHelper";
 import { userSearchAbleFields } from "./user.constant";
 import { IFile } from "../../interface/file";
 import { IAuthUser } from "../../interface/common";
-
+import httpStatus from "http-status";
+import ApiError from "../../error/ApiError";
 //GET ALL USERS
 const getAllUsersFromDb = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
@@ -141,6 +142,8 @@ const createDoctor = async (req: Request) => {
     role: UserRole.DOCTOR,
   };
 
+
+
   const result = await prisma.$transaction(async (trx) => {
     await trx.user.create({
       data: userData,
@@ -174,6 +177,19 @@ const createPatient = async (req: Request) => {
     password: hashedPassword,
     role: UserRole.PATIENT,
   };
+
+  const isUserExist = await prisma.user.findUnique({
+    where: {
+      email: req.body.patient.email,
+    },
+  });
+
+  if (isUserExist) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "This email has Already an Account!"
+    );
+  }
 
   const result = await prisma.$transaction(async (trx) => {
     await trx.user.create({

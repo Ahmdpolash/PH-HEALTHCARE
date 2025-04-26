@@ -1,3 +1,4 @@
+"use client";
 import assets from "@/assets";
 import {
   Box,
@@ -10,9 +11,31 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import React from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type IPatientData = {
+  name: string;
+  email: string;
+  password: string;
+  address: string;
+  contactNumber: string;
+};
+
+interface IPatientRegisterFormData {
+  password: string;
+  patient: IPatientData;
+}
 
 const Register = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<IPatientRegisterFormData>();
+  const onSubmit: SubmitHandler<IPatientRegisterFormData> = (data) =>
+    console.log(data);
+
   return (
     <Container>
       <Stack
@@ -49,7 +72,7 @@ const Register = () => {
           </Stack>
 
           <Box mt={2}>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={2} my={1}>
                 <Grid size={12}>
                   <TextField
@@ -57,17 +80,28 @@ const Register = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // {...register("patient.name")}
+                    {...register("patient.name", { required: true })}
                   />
+                  {errors?.patient?.name && (
+                    <span className="grid text-start text-red-500">
+                      Name is Required
+                    </span>
+                  )}
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
                     label="Email"
                     variant="outlined"
                     size="small"
+                    type="email"
                     fullWidth={true}
-                    // {...register("patient.email")}
+                    {...register("patient.email", { required: true })}
                   />
+                  {errors?.patient?.email && (
+                    <span className="grid text-start text-red-500">
+                      Email is Required
+                    </span>
+                  )}
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
@@ -75,8 +109,13 @@ const Register = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // {...register("patient.password")}
+                    {...register("password", { required: true })}
                   />
+                  {errors?.patient?.password && (
+                    <span className="grid text-start text-red-500">
+                      Password is Required
+                    </span>
+                  )}
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
@@ -85,7 +124,7 @@ const Register = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    //  {...register("patient.contactNumber")}
+                    {...register("patient.contactNumber")}
                   />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
@@ -95,7 +134,7 @@ const Register = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    //  {...register("patient.address")}
+                    {...register("patient.address")}
                   />
                 </Grid>
               </Grid>

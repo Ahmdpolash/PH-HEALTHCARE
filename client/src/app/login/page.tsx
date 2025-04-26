@@ -1,3 +1,4 @@
+"use client";
 import assets from "@/assets";
 import {
   Box,
@@ -9,10 +10,25 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useForm, SubmitHandler } from "react-hook-form";
+
 import Image from "next/image";
 import React from "react";
+export type FormValues = {
+  email: string;
+  password: string;
+};
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+
+    formState: { errors },
+  } = useForm<FormValues>();
+  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
+
   return (
     <Container>
       <Stack
@@ -49,7 +65,7 @@ const Login = () => {
           </Stack>
 
           <Box mt={2}>
-            <form>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={2} my={1}>
                 <Grid size={{ xs: 12, sm: 6 }}>
                   <TextField
@@ -57,7 +73,7 @@ const Login = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // {...Login("patient.email")}
+                    {...register("email")}
                   />
                 </Grid>
                 <Grid size={{ xs: 12, sm: 6 }}>
@@ -66,7 +82,7 @@ const Login = () => {
                     variant="outlined"
                     size="small"
                     fullWidth={true}
-                    // {...Login("patient.password")}
+                    {...register("password")}
                   />
                 </Grid>
               </Grid>{" "}

@@ -142,8 +142,6 @@ const createDoctor = async (req: Request) => {
     role: UserRole.DOCTOR,
   };
 
-
-
   const result = await prisma.$transaction(async (trx) => {
     await trx.user.create({
       data: userData,

@@ -44,7 +44,7 @@ const Register = () => {
     const data = modifyPayload(values);
 
     const res = await registerPatient(data);
-    console.log(res);
+
     try {
       if (res?.success) {
         toast.success(res?.message);

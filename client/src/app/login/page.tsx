@@ -14,20 +14,38 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 import Image from "next/image";
 import React from "react";
+import { toast } from "sonner";
+import { userLogin } from "@/services/actions/loginUser";
+import { useRouter } from "next/navigation";
+import { storedToken } from "@/services/auth.service";
 export type FormValues = {
   email: string;
   password: string;
 };
 
 const Login = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
-    watch,
 
     formState: { errors },
   } = useForm<FormValues>();
-  const onSubmit: SubmitHandler<FormValues> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      const res = await userLogin(data);
+
+      if (res.success) {
+        storedToken(res?.data?.accessToken);
+        toast.success(res.message);
+        router.push("/");
+      } else {
+        toast.error(res.message);
+      }
+    } catch (error: any) {
+      toast.error("Something went wrong!");
+    }
+  };
 
   return (
     <Container>

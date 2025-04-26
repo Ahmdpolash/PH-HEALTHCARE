@@ -1,7 +1,15 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+"use client";
+import { getUserInfo, isLoggedIn } from "@/services/auth.service";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 
 const Navbar = () => {
+  const user = getUserInfo();
+
+  // console.log(user);
+
+  console.log(isLoggedIn())
+
   return (
     <Container>
       <Stack

@@ -8,7 +8,7 @@ import Custom from "@/components/Custom";
 import { Suspense } from "react";
 import Loading from "./loading";
 
-const inter = Inter({ subsets: ["latin"] });
+// const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "DocTime",
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={inter.className}>
+        <body >
           <AppRouterCacheProvider>
             <Suspense fallback={<Loading />}>
               <Toaster position="top-center" />

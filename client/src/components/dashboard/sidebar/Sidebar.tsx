@@ -13,15 +13,23 @@ import {
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import assets from "@/assets";
 import { drawerItems } from "@/utils/generateDrawerItems";
 import { UserRole } from "@/types";
 import SidebarItem from "./SidebarItem";
+import { getUserInfo } from "@/services/auth.service";
 
 const Sidebar = () => {
+  const [userRole, setUserRole] = useState("");
+
+  useEffect(() => {
+    const { role } = getUserInfo() as any;
+    setUserRole(role);
+  }, []);
+
   return (
     <Box>
       <Stack
@@ -48,8 +56,8 @@ const Sidebar = () => {
         </Typography>
       </Stack>
       <List>
-        {drawerItems("admin" as UserRole).map((item, index) => (
-          <SidebarItem  item={item} />
+        {drawerItems(userRole as UserRole).map((item, index) => (
+          <SidebarItem item={item} />
         ))}
       </List>
     </Box>

@@ -40,7 +40,7 @@ const Login = () => {
       if (res.success) {
         storedToken(res?.data?.accessToken);
         toast.success(res.message);
-        router.push("/");
+        router.push("/dashboard");
       } else {
         setError(res.message);
         // toast.error(res.message);

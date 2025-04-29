@@ -68,7 +68,7 @@ const Register = () => {
           });
           if (result?.data?.accessToken) {
             storedToken(result?.data?.accessToken);
-            router.push("/");
+            router.push("/dashboard");
           }
         }
       } else {

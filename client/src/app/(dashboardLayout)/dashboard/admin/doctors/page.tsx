@@ -1,27 +1,32 @@
 "use client";
 import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
 import { useState } from "react";
-import {
-  useDeleteSpecialityMutation,
-  useGetSpecialityQuery,
-} from "@/redux/api/specialitiesApi";
+import { useGetSpecialityQuery } from "@/redux/api/specialitiesApi";
 import { DataGrid, GridColDef, GridDeleteIcon } from "@mui/x-data-grid";
 import Image from "next/image";
 import { toast } from "sonner";
-import { SpecialityModal } from "../../_component/SpecialityModal";
+
 import { DoctorModal } from "../../_component/DoctorModal";
+import {
+  useDeleteDoctorMutation,
+  useGetDoctorsQuery,
+} from "@/redux/api/doctorApi";
 
 const DoctorsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const { data, isLoading } = useGetSpecialityQuery({});
-  const [deleteSpeciality] = useDeleteSpecialityMutation();
+  const { data, isLoading } = useGetDoctorsQuery({});
+  const doctors = data?.doctors;
+  const meta = data?.meta;
 
+  const [deleteDoctor] = useDeleteDoctorMutation();
+
+  // delete doctor
   const handleDelete = async (id: string) => {
     try {
-      const res = await deleteSpeciality(id).unwrap();
+      const res = await deleteDoctor(id).unwrap();
       if (res?.id) {
-        toast.success("Specialty deleted successfully!!!");
+        toast.success("Doctor deleted successfully!!!");
       }
     } catch (err: any) {
       console.error(err.message);
@@ -29,19 +34,12 @@ const DoctorsPage = () => {
   };
 
   const columns: GridColDef[] = [
-    { field: "title", headerName: "Title", width: 400 },
-    {
-      field: "icon",
-      headerName: "Icon",
-      flex: 1,
-      renderCell: ({ row }) => {
-        return (
-          <Box>
-            <Image src={row.icon} width={30} height={30} alt="icon" />
-          </Box>
-        );
-      },
-    },
+    { field: "name", headerName: "Name", flex: 1 },
+    { field: "email", headerName: "Email", flex: 1 },
+    { field: "contactNumber", headerName: "Contact Number", flex: 1 },
+    { field: "gender", headerName: "Gender", flex: 1 },
+    { field: "appointmentFee", headerName: "Appointment Fee", flex: 1 },
+
     {
       field: "action",
       headerName: "Action",
@@ -68,7 +66,7 @@ const DoctorsPage = () => {
 
       {!isLoading ? (
         <Box my={2}>
-          <DataGrid rows={data} columns={columns} />
+          <DataGrid rows={doctors} columns={columns} />
         </Box>
       ) : (
         <div className="min-h-[calc(100vh-160px)] grid place-items-center">

@@ -67,7 +67,7 @@ const SpecialitiesPage = () => {
 
       {!isLoading ? (
         <Box my={2}>
-          <DataGrid rows={data} columns={columns} />
+          <DataGrid rows={data} columns={columns} hideFooter={true} />
         </Box>
       ) : (
         <div className="min-h-[calc(100vh-160px)] grid place-items-center">

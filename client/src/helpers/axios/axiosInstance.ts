@@ -40,6 +40,7 @@ instance.interceptors.response.use(
     const config = error.config;
 
     if (error?.response?.status === 500 && !config.sent) {
+      config.sent = true;
       const response = await generateNewAccessToken();
       const accessToken = response?.data?.accessToken;
 
@@ -47,7 +48,6 @@ instance.interceptors.response.use(
 
       setToLocalStorage(authKey, accessToken);
       return instance(config);
-      console.log(response);
     } else {
       const responseObject: IGenericErrorResponse = {
         statusCode: error?.response?.data?.statusCode || 500,

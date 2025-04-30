@@ -9,7 +9,7 @@ export const scheduleApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: "/schedule/create-schedule",
         method: "POST",
-        body: data,
+        data,
       }),
       invalidatesTags: [tagTypes.schedule],
     }),

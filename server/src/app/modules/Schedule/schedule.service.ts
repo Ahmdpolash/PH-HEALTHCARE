@@ -131,7 +131,6 @@ const getAllFromDB = async (
   const doctorScheduleIds = doctorSchedules.map(
     (schedule) => schedule.scheduleId
   );
-  console.log(doctorScheduleIds);
 
   const whereConditions: Prisma.ScheduleWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};

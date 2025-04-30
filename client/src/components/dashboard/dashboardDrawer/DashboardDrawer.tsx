@@ -26,7 +26,7 @@ export default function DashboardDrawer({
   const [isClosing, setIsClosing] = React.useState(false);
 
   const { data, isLoading } = useGetMeQuery({});
-  console.log(data);
+  
 
   const handleDrawerClose = () => {
     setIsClosing(true);

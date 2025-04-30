@@ -8,9 +8,9 @@ export const userLogin = async (formData: FieldValues) => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include",
       body: JSON.stringify(formData),
-      cache: "no-store",
+      credentials: "include",
+      // cache: "no-store",
     }
   );
   const userInfo = await res.json();

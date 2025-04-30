@@ -9,6 +9,7 @@ import {
 import { DataGrid, GridColDef, GridDeleteIcon } from "@mui/x-data-grid";
 import Image from "next/image";
 import { toast } from "sonner";
+import { useDebounced } from "@/redux/hook";
 
 const SpecialitiesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -16,9 +17,17 @@ const SpecialitiesPage = () => {
   // search
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState<string>("");
-  console.log("searchTerm", searchTerm);
 
-  const { data, isLoading } = useGetSpecialityQuery({});
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
+
+  if (!!debouncedTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+
+  const { data, isLoading } = useGetSpecialityQuery({ ...query });
   const [deleteSpeciality] = useDeleteSpecialityMutation();
 
   const handleDelete = async (id: string) => {

@@ -12,6 +12,10 @@ const SpecialitiesPage = () => {
         <SpecialityModal open={isModalOpen} setOpen={setIsModalOpen} />
         <TextField size="small" placeholder="Search Specialist" />
       </Stack>
+
+      
+
+
     </Box>
   );
 };

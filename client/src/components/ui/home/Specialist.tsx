@@ -30,7 +30,7 @@ const Specialist = async () => {
           </Typography>
         </Box>
         <Stack direction="row" gap={4} mt={5}>
-          {data.map((specialty: any) => (
+          {data.slice(0, 6).map((specialty: any) => (
             <Box
               key={specialty.id}
               sx={{

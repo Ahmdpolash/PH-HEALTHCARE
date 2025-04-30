@@ -11,7 +11,10 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Sidebar from "../sidebar/Sidebar";
 import { getUserInfo } from "@/services/auth.service";
-
+import { Avatar, Badge, Stack } from "@mui/material";
+import AccountMenu from "../AccountMenu";
+import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
+import { useGetMeQuery } from "@/redux/api/userApi";
 const drawerWidth = 240;
 
 export default function DashboardDrawer({
@@ -21,6 +24,9 @@ export default function DashboardDrawer({
 }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [isClosing, setIsClosing] = React.useState(false);
+
+  const { data, isLoading } = useGetMeQuery({});
+  console.log(data);
 
   const handleDrawerClose = () => {
     setIsClosing(true);
@@ -62,18 +68,37 @@ export default function DashboardDrawer({
           >
             <MenuIcon />
           </IconButton>
-          <Box>
-            <Typography variant="body2" noWrap component="div" color="gray">
-              Hi, Polash Ahmed
-            </Typography>
-            <Typography
-              variant="body2"
-              noWrap
-              component="div"
-              color="primary.main"
-            >
-              Welcome To, PH Health Care !
-            </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <Typography variant="body2" noWrap component="div" color="gray">
+                Hi, {isLoading ? "user..." : data?.name},
+              </Typography>
+              <Typography
+                variant="body2"
+                noWrap
+                component="div"
+                color="primary.main"
+              >
+                Welcome To, PH Health Care !
+              </Typography>
+            </Box>
+
+            <Stack direction="row" gap={3}>
+              <Badge badgeContent={1} color="primary">
+                <IconButton sx={{ background: "#ffffff" }}>
+                  <NotificationsNoneIcon color="action" />
+                </IconButton>
+              </Badge>
+              <Avatar alt={data?.name} src={data?.profilePhoto} />
+              <AccountMenu />
+            </Stack>
           </Box>
         </Toolbar>
       </AppBar>

@@ -21,9 +21,7 @@ export const useDebounced = ({ searchQuery, delay }: TDebounce) => {
 
     return () => {
       clearTimeout(handler);
-      };
-      
-
+    };
   }, [searchQuery, delay]);
 
   return debouncedValue;

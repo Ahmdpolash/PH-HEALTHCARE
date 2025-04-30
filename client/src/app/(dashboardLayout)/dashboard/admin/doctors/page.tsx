@@ -11,6 +11,7 @@ import {
   useDeleteDoctorMutation,
   useGetDoctorsQuery,
 } from "@/redux/api/doctorApi";
+import { useDebounced } from "@/redux/hook";
 
 const DoctorsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -18,9 +19,16 @@ const DoctorsPage = () => {
   const query: Record<string, any> = {};
   const [searchTerm, setSearchTerm] = useState<string>("");
 
-  query["searchTerm"] = searchTerm;
+  const debouncedTerm = useDebounced({
+    searchQuery: searchTerm,
+    delay: 600,
+  });
 
-  const { data, isLoading } = useGetDoctorsQuery({...query});
+  if (!!debouncedTerm) {
+    query["searchTerm"] = searchTerm;
+  }
+
+  const { data, isLoading } = useGetDoctorsQuery({ ...query });
 
   // format data for datagrid
   const doctors = data?.doctors;

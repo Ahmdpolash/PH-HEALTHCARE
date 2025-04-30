@@ -3,7 +3,6 @@ import { Box, Button, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 import { SpecialityModal } from "./_component/SpecialityModal";
 
-
 const SpecialitiesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   return (

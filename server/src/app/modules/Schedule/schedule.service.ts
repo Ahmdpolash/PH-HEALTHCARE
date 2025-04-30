@@ -176,7 +176,7 @@ const getScheduleById = async (id: string) => {
       id,
     },
   });
-  //console.log(result?.startDateTime.getHours() + ":" + result?.startDateTime.getMinutes())
+
   return result;
 };
 

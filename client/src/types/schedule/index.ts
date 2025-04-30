@@ -1,7 +1,7 @@
 export type ISchedule = {
   id?: string;
-  startDate: string;
-  endDate: string;
+  startDateTime: string;
+  endDateTime: string;
 };
 
 export type IScheduleFrom = {

@@ -14,19 +14,27 @@ export const scheduleApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.schedule],
     }),
 
-    getSchedule: builder.query({
-      query: (args: Record<string, any>) => ({
-        url: "/schedule",
-        method: "GET",
-        params: args,
-      }),
-      transformResponse: (response: ISchedule[], meta: IMeta) => {
+    getAllSchedules: builder.query({
+      query: (arg: Record<string, any>) => {
+        return {
+          url: "/schedule",
+          method: "GET",
+          params: arg,
+        };
+      },
+      transformResponse: (response: [], meta: IMeta) => {
         return {
           schedules: response,
           meta,
         };
       },
       providesTags: [tagTypes.schedule],
+    }),
+    getScheduleById: builder.query({
+      query: (id) => ({
+        url: `/schedule/${id}`,
+        method: "GET",
+      }),
     }),
 
     deleteSchedule: builder.mutation({
@@ -41,6 +49,7 @@ export const scheduleApi = baseApi.injectEndpoints({
 
 export const {
   useCreateScheduleMutation,
-  useGetScheduleQuery,
+  useGetAllSchedulesQuery,
   useDeleteScheduleMutation,
+  useGetScheduleByIdQuery,
 } = scheduleApi;

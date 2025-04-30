@@ -33,7 +33,8 @@ const getAllFromDB: RequestHandler = catchAsync(
       statusCode: httpStatus.OK,
       success: true,
       message: "Schedule retrieved successfully",
-      data: result,
+      data: result.data,
+      meta: result.meta,
     });
   }
 );
@@ -54,7 +55,8 @@ const getScheduleById = catchAsync(async (req, res) => {
 
 const deleteFromDB = catchAsync(async (req, res) => {
   const { id } = req.params;
-  const result = await ScheduleService.getScheduleById(id);
+
+  const result = await ScheduleService.deleteFromDB(id);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,

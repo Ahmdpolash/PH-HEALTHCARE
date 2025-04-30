@@ -1,17 +1,18 @@
 "use client";
 import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
 import { useState } from "react";
-import { useGetSpecialityQuery } from "@/redux/api/specialitiesApi";
+import EditIcon from "@mui/icons-material/Edit";
 import { DataGrid, GridColDef, GridDeleteIcon } from "@mui/x-data-grid";
-import Image from "next/image";
-import { toast } from "sonner";
 
+import { toast } from "sonner";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { DoctorModal } from "../../_component/DoctorModal";
 import {
   useDeleteDoctorMutation,
   useGetDoctorsQuery,
 } from "@/redux/api/doctorApi";
 import { useDebounced } from "@/redux/hook";
+import Link from "next/link";
 
 const DoctorsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -64,9 +65,19 @@ const DoctorsPage = () => {
       align: "center",
       renderCell: ({ row }) => {
         return (
-          <IconButton onClick={() => handleDelete(row.id)} aria-label="delete">
-            <GridDeleteIcon />
-          </IconButton>
+          <Box>
+            <IconButton
+              onClick={() => handleDelete(row.id)}
+              aria-label="delete"
+            >
+              <DeleteIcon sx={{ color: "red" }} />
+            </IconButton>
+            <Link href={`/dashboard/admin/doctors/${row.id}`}>
+              <IconButton aria-label="delete">
+                <EditIcon />
+              </IconButton>
+            </Link>
+          </Box>
         );
       },
     },

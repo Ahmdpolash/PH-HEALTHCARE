@@ -76,8 +76,16 @@ const Login = () => {
             }}
           >
             <Box>
-              <Image src={assets.svgs.logo} width={50} height={50} alt="logo" />
+              <Link className="cursor-pointer" href="/">
+                <Image
+                  src={assets.svgs.logo}
+                  width={50}
+                  height={50}
+                  alt="logo"
+                />
+              </Link>
             </Box>
+
             <Box>
               <Typography variant="h6" fontWeight={600}>
                 Patient Login

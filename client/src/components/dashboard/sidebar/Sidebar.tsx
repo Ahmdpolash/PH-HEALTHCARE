@@ -24,10 +24,10 @@ import { getUserInfo } from "@/services/auth.service";
 
 const Sidebar = () => {
   const [userRole, setUserRole] = useState("");
-
+ 
   useEffect(() => {
-    const { role } = getUserInfo() as any;
-    setUserRole(role);
+    const data = getUserInfo() as any;
+    setUserRole(data?.role);
   }, []);
 
   return (

@@ -13,6 +13,11 @@ import { toast } from "sonner";
 const SpecialitiesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  // search
+  const query: Record<string, any> = {};
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  console.log("searchTerm", searchTerm);
+
   const { data, isLoading } = useGetSpecialityQuery({});
   const [deleteSpeciality] = useDeleteSpecialityMutation();
 
@@ -62,7 +67,11 @@ const SpecialitiesPage = () => {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Button onClick={() => setIsModalOpen(true)}>Create Specialty</Button>
         <SpecialityModal open={isModalOpen} setOpen={setIsModalOpen} />
-        <TextField size="small" placeholder="Search Specialist" />
+        <TextField
+          onChange={(e) => setSearchTerm(e.target.value)}
+          size="small"
+          placeholder="Search Specialist"
+        />
       </Stack>
 
       {!isLoading ? (

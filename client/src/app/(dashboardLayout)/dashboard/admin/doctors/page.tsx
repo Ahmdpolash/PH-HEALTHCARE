@@ -14,8 +14,15 @@ import {
 
 const DoctorsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  // search
+  const query: Record<string, any> = {};
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
-  const { data, isLoading } = useGetDoctorsQuery({});
+  query["searchTerm"] = searchTerm;
+
+  const { data, isLoading } = useGetDoctorsQuery({...query});
+
+  // format data for datagrid
   const doctors = data?.doctors;
   const meta = data?.meta;
 
@@ -37,7 +44,8 @@ const DoctorsPage = () => {
     { field: "name", headerName: "Name", flex: 1 },
     { field: "email", headerName: "Email", flex: 1 },
     { field: "contactNumber", headerName: "Contact Number", flex: 1 },
-    { field: "gender", headerName: "Gender", flex: 1 },
+    { field: "qualification", headerName: "Qualification", flex: 1 },
+    { field: "designation", headerName: "Designation", flex: 1 },
     { field: "appointmentFee", headerName: "Appointment Fee", flex: 1 },
 
     {
@@ -61,7 +69,11 @@ const DoctorsPage = () => {
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Button onClick={() => setIsModalOpen(true)}>Create Doctor</Button>
         <DoctorModal open={isModalOpen} setOpen={setIsModalOpen} />
-        <TextField size="small" placeholder="Search Doctor" />
+        <TextField
+          onChange={(e) => setSearchTerm(e.target.value)}
+          size="small"
+          placeholder="Search Doctor"
+        />
       </Stack>
 
       {!isLoading ? (

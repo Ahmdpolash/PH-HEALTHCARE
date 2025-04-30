@@ -1,7 +1,7 @@
 "use client";
 import { Box, Button, IconButton, Stack, TextField } from "@mui/material";
 import { useState } from "react";
-import { SpecialityModal } from "./_component/SpecialityModal";
+import { SpecialityModal } from "../../_component/SpecialityModal";
 import {
   useDeleteSpecialityMutation,
   useGetSpecialityQuery,

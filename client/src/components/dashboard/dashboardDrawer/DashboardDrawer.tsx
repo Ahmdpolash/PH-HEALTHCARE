@@ -10,7 +10,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Sidebar from "../sidebar/Sidebar";
-
+import { getUserInfo } from "@/services/auth.service";
 
 const drawerWidth = 240;
 

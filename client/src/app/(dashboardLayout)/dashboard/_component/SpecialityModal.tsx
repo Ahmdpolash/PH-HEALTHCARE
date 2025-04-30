@@ -25,7 +25,7 @@ export const SpecialityModal = ({ open, setOpen }: TProps) => {
 
     try {
       const res = await createSpecialty(data).unwrap();
-      console.log(res);
+     
       if (res?.id) {
         toast.success("Specialty created successfully!!");
         setOpen(false);

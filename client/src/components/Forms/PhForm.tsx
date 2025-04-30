@@ -35,7 +35,7 @@ const PhForm = ({
   const { handleSubmit, reset } = methods;
 
   const submit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data);
+    console.log(data, "data");
     onSubmit(data);
     reset();
   };

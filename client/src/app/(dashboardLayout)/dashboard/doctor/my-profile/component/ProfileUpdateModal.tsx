@@ -9,10 +9,11 @@ import {
 import { useGetSpecialityQuery } from "@/redux/api/specialitiesApi";
 import { Gender } from "@/types";
 import { Box, Button, Grid } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues } from "react-hook-form";
 
 import MultipleSelectChip from "../../../_component/MultiChip";
+import { toast } from "sonner";
 
 type TProps = {
   open: boolean;
@@ -20,11 +21,20 @@ type TProps = {
   id: string;
 };
 const ProfileUpdateModal = ({ open, setOpen, id }: TProps) => {
+  const [selectedSpecialtiesIds, setSelectedSpecialtiesIds] = useState([]);
   const { data, isLoading, refetch, isSuccess } = useGetDoctorByIdQuery(id);
 
   const { data: allSpecialties } = useGetSpecialityQuery(undefined);
   const [updateDoctor, { isLoading: updating }] = useUpdateDoctorMutation();
-  const [selectedSpecialtiesIds, setSelectedSpecialtiesIds] = useState([]);
+  useEffect(() => {
+    if (!isSuccess) return;
+
+    setSelectedSpecialtiesIds(
+      data?.doctorSpecialities?.map((sp: any) => {
+        return sp.specialitiesId;
+      })
+    );
+  }, [isSuccess]);
 
   const handleFormSubmit = async (values: FieldValues) => {
     const doctorSpecialities = selectedSpecialtiesIds.map(
@@ -64,25 +74,15 @@ const ProfileUpdateModal = ({ open, setOpen, id }: TProps) => {
     values.id = id;
 
     try {
-      updateDoctor({ body: updatedValues, id });
+      const res = await updateDoctor({ body: updatedValues, id });
+      if (res?.data) {
+        toast.success("Profile updated successfully");
+      }
       await refetch();
       setOpen(false);
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const defaultValues = {
-    name: data?.name || "",
-    contactNumber: data?.contactNumber || "",
-    address: data?.address || "",
-    registrationNumber: data?.registrationNumber || "",
-    gender: data?.gender || "",
-    experience: data?.experience || 0,
-    appointmentFee: data?.appointmentFee || 0,
-    qualification: data?.qualification || "",
-    currentWorkingPlace: data?.currentWorkingPlace || "",
-    designation: data?.designation || "",
   };
 
   return (

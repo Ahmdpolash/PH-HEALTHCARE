@@ -52,7 +52,7 @@ export const doctorApi = baseApi.injectEndpoints({
         method: "PATCH",
         data: data.body,
       }),
-      invalidatesTags: [tagTypes.doctor],
+      invalidatesTags: [tagTypes.doctor, tagTypes.user],
     }),
   }),
 });
@@ -62,5 +62,5 @@ export const {
   useGetDoctorsQuery,
   useDeleteDoctorMutation,
   useUpdateDoctorMutation,
-  useGetDoctorByIdQuery
+  useGetDoctorByIdQuery,
 } = doctorApi;

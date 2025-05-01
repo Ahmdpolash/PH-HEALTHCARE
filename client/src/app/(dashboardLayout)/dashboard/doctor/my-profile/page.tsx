@@ -1,16 +1,28 @@
 "use client";
 
-import { useGetMeQuery } from "@/redux/api/userApi";
+import { useGetMeQuery, useUpdateMyProfileMutation } from "@/redux/api/userApi";
 import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import Image from "next/image";
 import ProfileInformation from "./component/ProfileInformation";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { useState } from "react";
+import AutoFileUploader from "@/components/Forms/AutoFIleUploader";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
 const MyProfilePage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const { data } = useGetMeQuery({});
+  const [updateMYProfile, { isLoading: updating }] =
+    useUpdateMyProfileMutation();
+
+  const fileUploadHandler = (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("data", JSON.stringify({}));
+
+    updateMYProfile(formData);
+  };
 
   return (
     <Container>
@@ -32,6 +44,18 @@ const MyProfilePage = () => {
               alt="User Photo"
             />
           </Box>
+
+          {updating ? (
+            <p className="py-3 text-xl">Uploading...</p>
+          ) : (
+            <AutoFileUploader
+              name="file"
+              label="Choose Your Profile Photo"
+              icon={<CloudUploadIcon />}
+              onFileUpload={fileUploadHandler}
+              variant="text"
+            />
+          )}
 
           <Button
             fullWidth

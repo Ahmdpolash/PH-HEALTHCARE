@@ -65,6 +65,10 @@ const DoctorUpdatePage = ({ params }: TProps) => {
     currentWorkingPlace: data?.currentWorkingPlace || "",
     designation: data?.designation || "",
   };
+
+  
+
+
   return (
     <Box>
       <Typography component="h5" variant="h5">

@@ -104,6 +104,13 @@ const getByIdFromDb = async (id: string) => {
       id,
       isDeleted: false,
     },
+    include: {
+      doctorSpecialities: {
+        include: {
+          specialities: true,
+        },
+      },
+    },
   });
 
   return result;
@@ -171,7 +178,7 @@ const softDeleteById = async (id: string): Promise<Doctor | null> => {
 // updatee  data
 
 const updateDoctor = async (id: string, payload: IDoctorUpdate) => {
-  const { specialities, ...doctorData } = payload;
+  const { doctorSpecialities, ...doctorData } = payload;
 
   const doctorInfo = await prisma.doctor.findUniqueOrThrow({
     where: {
@@ -187,9 +194,9 @@ const updateDoctor = async (id: string, payload: IDoctorUpdate) => {
       data: doctorData,
     });
 
-    if (specialities && specialities.length > 0) {
+    if (doctorSpecialities && doctorSpecialities.length > 0) {
       // delete specialties
-      const deleteSpecialtiesIds = specialities.filter(
+      const deleteSpecialtiesIds = doctorSpecialities.filter(
         (specialty) => specialty.isDeleted
       );
 
@@ -203,7 +210,7 @@ const updateDoctor = async (id: string, payload: IDoctorUpdate) => {
       }
 
       // create specialties
-      const createSpecialtiesIds = specialities.filter(
+      const createSpecialtiesIds = doctorSpecialities.filter(
         (specialty) => !specialty.isDeleted
       );
 

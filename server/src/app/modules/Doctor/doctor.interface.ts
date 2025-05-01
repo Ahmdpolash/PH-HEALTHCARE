@@ -18,7 +18,7 @@ export type IDoctorUpdate = {
   qualification: string;
   currentWorkingPlace: string;
   designation: string;
-  specialities: ISpecialities[];
+  doctorSpecialities: ISpecialities[];
 };
 
 export type ISpecialities = {

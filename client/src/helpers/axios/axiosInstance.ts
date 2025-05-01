@@ -1,4 +1,5 @@
 import { authKey } from "@/constants/authKey";
+import setAccessToken from "@/services/actions/setAccessToken";
 import { generateNewAccessToken } from "@/services/auth.service";
 import { IGenericErrorResponse, ResponseSuccessType } from "@/types";
 import { getFromLocalStorage, setToLocalStorage } from "@/utils/LocalStorage";
@@ -47,6 +48,7 @@ instance.interceptors.response.use(
       config.headers["Authorization"] = accessToken;
 
       setToLocalStorage(authKey, accessToken);
+      setAccessToken(accessToken)
       return instance(config);
     } else {
       const responseObject: IGenericErrorResponse = {

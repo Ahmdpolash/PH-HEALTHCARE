@@ -1,3 +1,4 @@
+import { IMeta } from "@/types";
 import { tagTypes } from "../tag-types";
 import { baseApi } from "./baseApi";
 
@@ -11,6 +12,7 @@ export const doctorScheduleApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.doctorSchedule],
     }),
+
     getMySchedule: builder.query({
       query: (arg: Record<string, any>) => {
         return {
@@ -20,6 +22,7 @@ export const doctorScheduleApi = baseApi.injectEndpoints({
         };
       },
     }),
+
     getAllDoctorSchedule: builder.query({
       query: (arg: Record<string, any>) => {
         return {
@@ -28,9 +31,38 @@ export const doctorScheduleApi = baseApi.injectEndpoints({
           params: arg,
         };
       },
+
+      transformResponse: (response: [], meta: IMeta) => {
+        return {
+          doctorSchedule: response,
+          meta,
+        };
+      },
+      providesTags: [tagTypes.doctorSchedule],
+    }),
+
+    deleteDoctorSchedule: builder.mutation({
+      query: (id: string) => ({
+        url: `/doctor-schedule/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [tagTypes.doctorSchedule],
+    }),
+
+    getDoctorScheduleById: builder.query({
+      query: (id: string | string[] | undefined) => ({
+        url: `/doctor-schedule/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.doctorSchedule],
     }),
   }),
 });
 
-export const { useCreateDoctorScheduleMutation, useGetAllDoctorScheduleQuery,useGetMyScheduleQuery } =
-  doctorScheduleApi;
+export const {
+  useCreateDoctorScheduleMutation,
+  useGetAllDoctorScheduleQuery,
+  useGetMyScheduleQuery,
+  useDeleteDoctorScheduleMutation,
+  useGetDoctorScheduleByIdQuery,
+} = doctorScheduleApi;

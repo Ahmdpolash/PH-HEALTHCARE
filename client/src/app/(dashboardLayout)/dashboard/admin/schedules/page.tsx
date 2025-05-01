@@ -78,7 +78,7 @@ const SchedulePage = () => {
   ];
 
   return (
-    <div>
+   
       <Box>
         <Stack
           direction="row"
@@ -99,7 +99,7 @@ const SchedulePage = () => {
           </div>
         )}
       </Box>
-    </div>
+   
   );
 };
 export default SchedulePage;

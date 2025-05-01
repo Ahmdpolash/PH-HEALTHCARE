@@ -24,8 +24,9 @@ const SchedulesPage = () => {
   const meta = data?.meta;
 
   useEffect(() => {
-    const updateData = schedules?.map((schedule: any) => {
+    const updateData = schedules?.map((schedule: any, index: number) => {
       return {
+        sl: index + 1,
         id: schedule?.schedule?.id,
         startDate: dateFormatter(schedule?.schedule?.startDateTime),
         startTime: dayjs(schedule?.schedule?.startDateTime).format("hh:mm a"),
@@ -36,6 +37,7 @@ const SchedulesPage = () => {
   }, [schedules]);
 
   const columns: GridColDef[] = [
+    { field: "sl", headerName: "SL" },
     { field: "startDate", headerName: "Date", flex: 1 },
     { field: "startTime", headerName: "Start Time", flex: 1 },
     { field: "endTime", headerName: "End Time", flex: 1 },

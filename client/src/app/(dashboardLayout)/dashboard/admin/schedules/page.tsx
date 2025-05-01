@@ -24,7 +24,7 @@ const SchedulePage = () => {
   const meta = data?.meta;
 
   useEffect(() => {
-    const updateData = schedules?.map((schedule: ISchedule) => {
+    const updateData = schedules?.map((schedule: ISchedule,index:number) => {
       return {
         id: schedule?.id,
         startDate: dateFormatter(schedule?.startDateTime),

@@ -30,8 +30,6 @@ export function getTimeIn12HourFormat(dateTimeString: string): string {
   return `${formattedHours}:${formattedMinutes} ${ampm}`;
 }
 
-
-
 function getStyles(name: string, personName: readonly string[], theme: Theme) {
   return {
     fontWeight:
@@ -48,7 +46,6 @@ export default function MultipleSelectFieldChip({
 }: any) {
   const theme = useTheme();
 
-
   const handleChange = (
     event: SelectChangeEvent<typeof selectedScheduleIds>
   ) => {
@@ -64,7 +61,7 @@ export default function MultipleSelectFieldChip({
   return (
     <div>
       <FormControl sx={{ width: 300 }}>
-        <InputLabel id="demo-multiple-chip-label">Chip</InputLabel>
+        <InputLabel id="demo-multiple-chip-label"> Slot</InputLabel>
         <Select
           labelId="demo-multiple-chip-label"
           id="demo-multiple-chip"
@@ -80,7 +77,7 @@ export default function MultipleSelectFieldChip({
                     (schedule: any) => schedule.id === value
                   );
 
-                  if (!selectedSchedule) return null
+                  if (!selectedSchedule) return null;
 
                   const formattedTimeSlot = `${getTimeIn12HourFormat(
                     selectedSchedule.startDateTime

@@ -228,4 +228,5 @@ export const DoctorScheduleService = {
   insertIntoDB,
   getMySchedule,
   deleteFromDB,
+  getDoctorSchedule,
 };

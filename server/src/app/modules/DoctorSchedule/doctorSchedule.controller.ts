@@ -34,7 +34,7 @@ const getAllFromDB: RequestHandler = catchAsync(
     const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
 
     const user = req.user;
-    const result = await DoctorScheduleService.getMySchedule(
+    const result = await DoctorScheduleService.getDoctorSchedule(
       filters,
       options,
       user
@@ -49,7 +49,6 @@ const getAllFromDB: RequestHandler = catchAsync(
     });
   }
 );
-
 
 const getMySchedule: RequestHandler = catchAsync(
   async (req: Request & { user?: IAuthUser }, res: Response) => {

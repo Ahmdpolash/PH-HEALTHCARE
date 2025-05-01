@@ -1,11 +1,16 @@
 "use client";
 import { Button, Stack } from "@mui/material";
-import ScheduleModal from "../../_component/ScheduleModal";
+
 import { useState } from "react";
 import DoctorScheduleModel from "../../_component/DoctorScheduleModel";
+import { useGetAllDoctorScheduleQuery, useGetMyScheduleQuery } from "@/redux/api/doctorScheduleApi";
 
 const SchedulesPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { data } = useGetAllDoctorScheduleQuery({});
+
+  console.log(data);
 
   return (
     <div>

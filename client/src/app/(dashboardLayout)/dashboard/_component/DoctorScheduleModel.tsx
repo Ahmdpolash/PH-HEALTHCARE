@@ -1,8 +1,8 @@
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-// import LoadingButton from "@mui/lab/LoadingButton";
-import dayjs, { Dayjs } from "dayjs";
+import LoadingButton from "@mui/lab/LoadingButton";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { useGetAllSchedulesQuery } from "@/redux/api/scheduleApi";
 
@@ -10,6 +10,8 @@ import { Stack } from "@mui/material";
 import PHModal from "@/components/shared/PhModal";
 import { useCreateDoctorMutation } from "@/redux/api/doctorApi";
 import MultipleSelectFieldChip from "./MultipleSelectField";
+import { useCreateDoctorScheduleMutation } from "@/redux/api/doctorScheduleApi";
+import { toast } from "sonner";
 
 type TProps = {
   isModalOpen: boolean;
@@ -17,7 +19,6 @@ type TProps = {
 };
 
 const DoctorScheduleModel = ({ isModalOpen, setIsModalOpen }: TProps) => {
-  
   const [selectedDate, setSelectedDate] = useState(
     dayjs(new Date()).toISOString()
   );
@@ -42,17 +43,18 @@ const DoctorScheduleModel = ({ isModalOpen, setIsModalOpen }: TProps) => {
   const { data } = useGetAllSchedulesQuery(query);
   const schedules = data?.schedules;
 
-  const [createDoctorSchedule, { isLoading }] = useCreateDoctorMutation();
-
-  console.log(schedules);
+  const [createDoctorSchedule, { isLoading }] =
+    useCreateDoctorScheduleMutation();
 
   const onSubmit = async () => {
     try {
       const res = await createDoctorSchedule({
         scheduleIds: selectedScheduleIds,
       });
-      console.log(res);
-      setIsModalOpen(false);
+      if (res?.data) {
+        toast.success("My Schedule Slot Added");
+        setIsModalOpen(false);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -81,7 +83,7 @@ const DoctorScheduleModel = ({ isModalOpen, setIsModalOpen }: TProps) => {
           setSelectedScheduleIds={setSelectedScheduleIds}
         />
 
-        {/* <LoadingButton
+        <LoadingButton
           size="small"
           onClick={onSubmit}
           loading={isLoading}
@@ -89,7 +91,7 @@ const DoctorScheduleModel = ({ isModalOpen, setIsModalOpen }: TProps) => {
           variant="contained"
         >
           <span>Submit</span>
-        </LoadingButton> */}
+        </LoadingButton>
       </Stack>
     </PHModal>
   );

@@ -9,10 +9,22 @@ router.get("/", DoctorControllers.getAllDoctorFromDb);
 
 router.get("/:id", DoctorControllers.getByIdFromDb);
 
-router.patch("/:id", DoctorControllers.updateDoctor);
+router.patch(
+  "/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.DOCTOR),
+  DoctorControllers.updateDoctor
+);
 
-router.delete("/:id", DoctorControllers.deleteById);
+router.delete(
+  "/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  DoctorControllers.deleteById
+);
 
-router.delete("/soft/:id", DoctorControllers.softDeleteById);
+router.delete(
+  "/soft/:id",
+  auth(UserRole.SUPER_ADMIN, UserRole.ADMIN),
+  DoctorControllers.softDeleteById
+);
 
 export const DoctorRouters = router;

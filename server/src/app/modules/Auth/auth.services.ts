@@ -163,6 +163,10 @@ const forgotPassword = async (email: string) => {
     `?userId=${user.id}&token=${resetPasswordToken}`;
 
   emailSender(user.email, user.email, resetPassLink);
+  return {
+    status: httpStatus.OK,
+    message: "Password reset link sent to your email",
+  };
 };
 
 //reset password

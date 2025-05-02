@@ -20,8 +20,10 @@ export const getUserInfo = () => {
     const decodedData: any = decodeToken(authToken);
     return {
       ...decodedData,
-      role: decodedData?.role.toLowerCase(),
+      role: decodedData?.role?.toLowerCase(),
     };
+  } else {
+    return "";
   }
 };
 

@@ -15,18 +15,14 @@ const AuthButton = () => {
 
   return (
     <div>
-      {!user ? (
-        <>
-          <Button component={Link} href="/login">
-            Login
-          </Button>
-        </>
+      {user?.email ? (
+        <Button color="error" onClick={handleLogOut}>
+          Logout
+        </Button>
       ) : (
-        <>
-          <Button color="error" onClick={handleLogOut}>
-            Logout
-          </Button>
-        </>
+        <Button component={Link} href="/login">
+          Login
+        </Button>
       )}
     </div>
   );

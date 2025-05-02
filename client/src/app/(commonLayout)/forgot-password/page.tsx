@@ -19,11 +19,11 @@ const ForgotPasswordPage = () => {
   const [forgotPassword, { isSuccess }] = useForgotPasswordMutation();
 
   const onSubmit = async (values: FieldValues) => {
-    console.log(values);
+ 
 
     try {
       const res = await forgotPassword(values);
-      console.log(res);
+     
       if (res.data.status === 200) {
         toast.success(res.data.message);
       } else {

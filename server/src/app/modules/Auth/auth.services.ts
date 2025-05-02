@@ -210,6 +210,7 @@ const resetPassword = async (
   });
 
   return {
+    status: httpStatus.OK,
     message: "Password reset successfully!",
   };
 };

@@ -22,7 +22,7 @@ export const userApi = baseApi.injectEndpoints({
     }),
     changePassword: builder.mutation({
       query: (data) => ({
-        url: "/auth//change-password",
+        url: "/auth/change-password",
         method: "POST",
         data,
       }),
@@ -30,7 +30,7 @@ export const userApi = baseApi.injectEndpoints({
     }),
     forgotPassword: builder.mutation({
       query: (data) => ({
-        url: "/auth//forgot-password",
+        url: "/auth/forgot-password",
         method: "POST",
         data,
       }),
@@ -39,7 +39,7 @@ export const userApi = baseApi.injectEndpoints({
 
     resetPassword: builder.mutation({
       query: (data) => ({
-        url: "/auth//reset-password",
+        url: "/auth/reset-password",
         method: "POST",
         data: data,
       }),
@@ -48,4 +48,10 @@ export const userApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetMeQuery, useUpdateMyProfileMutation,useChangePasswordMutation,useForgotPasswordMutation,useResetPasswordMutation } = userApi;
+export const {
+  useGetMeQuery,
+  useUpdateMyProfileMutation,
+  useChangePasswordMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
+} = userApi;

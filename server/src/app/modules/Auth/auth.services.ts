@@ -133,6 +133,7 @@ const changePassword = async (
   });
 
   return {
+    status: httpStatus.OK,
     message: "Password changed successfully!",
   };
 };

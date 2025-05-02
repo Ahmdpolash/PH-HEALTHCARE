@@ -7,9 +7,18 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import TryIcon from "@mui/icons-material/Try";
+import KeyIcon from "@mui/icons-material/Key";
 
 export const drawerItems = (role: UserRole) => {
   const roleMenus: DrawerItem[] = [];
+
+  const defaultMenus = [
+    {
+      title: "Change Password",
+      path: `change-password`,
+      icon: KeyIcon,
+    },
+  ];
 
   switch (role) {
     case USER_ROLE.SUPER_ADMIN:
@@ -115,5 +124,5 @@ export const drawerItems = (role: UserRole) => {
       break;
   }
 
-  return [...roleMenus];
+  return [...roleMenus, ...defaultMenus];
 };

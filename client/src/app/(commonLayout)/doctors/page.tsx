@@ -1,7 +1,7 @@
 import { Box, Container } from "@mui/material";
-import DashedLine from "./component/DashedLine";
-import DoctorCard from "./component/DoctorCard";
-import ScrollCategory from "./component/ScrollCategory";
+import DashedLine from "./_component/DashedLine";
+import DoctorCard from "./_component/DoctorCard";
+import ScrollCategory from "./_component/ScrollCategory";
 
 interface PropType {
   searchParams: { specialities: string };
@@ -32,7 +32,11 @@ const Doctors = async ({ searchParams }: PropType) => {
           </Box>
         ))}
 
-        {data.length === 0 && <Box textAlign={"center"} mt={4}>No Doctor Found With This Specialty</Box>}
+        {data.length === 0 && (
+          <Box textAlign={"center"} mt={4}>
+            No Doctor Found With This Specialty
+          </Box>
+        )}
       </Box>
     </Container>
   );

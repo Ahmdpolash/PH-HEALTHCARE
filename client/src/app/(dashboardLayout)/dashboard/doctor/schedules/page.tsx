@@ -20,7 +20,7 @@ const SchedulesPage = () => {
 
   const query: Record<string, any> = {};
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(1);
+  const [limit, setLimit] = useState(3);
 
   query["page"] = page;
   query["limit"] = limit;
@@ -34,7 +34,7 @@ const SchedulesPage = () => {
   const [deleteSchedule] = useDeleteDoctorScheduleMutation();
   const { data, isLoading } = useGetAllDoctorScheduleQuery({ ...query });
   const schedules = data?.doctorSchedule;
-  console.log(schedules)
+  
   const meta = data?.meta;
   let pageCount: number;
 

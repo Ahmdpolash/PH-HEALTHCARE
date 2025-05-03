@@ -2,6 +2,7 @@ import { Box, Button, Chip, Container, Stack, Typography } from "@mui/material";
 import Image from "next/image";
 // import DoctorScheduleSlots from "../components/DoctorScheduleSlots";
 import DashedLine from "../_component/DashedLine";
+import DoctorScheduleSlots from "../_component/DoctorScheduleSlot";
 
 type PropTypes = {
   params: {
@@ -25,6 +26,8 @@ const InfoBoxStyles = {
 const DoctorsProfilePage = async ({ params }: PropTypes) => {
   const res = await fetch(`http://localhost:5000/api/v1/doctor/${params.id}`);
   const { data: doctor } = await res.json();
+
+  console.log(doctor, "doctor");
 
   const specialties = doctor.doctorSpecialities.map(
     (ds: any) => ds.specialities.title
@@ -156,7 +159,7 @@ const DoctorsProfilePage = async ({ params }: PropTypes) => {
           </Stack>
         </Box>
       </Box>
-      {/* <DoctorScheduleSlots id={doctor.id} /> */}
+      <DoctorScheduleSlots id={doctor.id} />
     </Container>
   );
 };

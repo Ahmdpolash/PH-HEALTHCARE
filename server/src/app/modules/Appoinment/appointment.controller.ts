@@ -34,7 +34,7 @@ const getMyAppointment: RequestHandler = catchAsync(async (req, res) => {
     success: true,
     message: "My Appointment retrived successfully!",
     meta: result.meta,
-    data: result,
+    data: result.data,
   });
 });
 

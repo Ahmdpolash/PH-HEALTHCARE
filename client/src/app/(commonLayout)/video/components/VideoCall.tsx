@@ -23,7 +23,7 @@ const VideoCall = ({ videoCallingId }: { videoCallingId: string }) => {
   };
 
   return startVideoCall ? (
-    <div style={{ display: "flex", width: "70vw", height: "100vh", justifyContent: "center", alignItems: "center", margin: '0 auto' }}>
+    <div style={{ display: "flex", width: "100vw", height: "100vh",  margin: '0 auto' }}>
       <AgoraUIKit rtcProps={rtcProps} callbacks={callbacks} />
     </div>
   ) : (

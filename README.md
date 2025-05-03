@@ -51,5 +51,5 @@ PH HealthCare is a modern, full-stack web application that streamlines communica
 
 1. **Clone the repo**
    ```bash
-   git clone https://github.com/yourusername/ph-healthcare.git
+   git clone  https://github.com/Ahmdpolash/PH-HEALTHCARE.git
    cd ph-healthcare

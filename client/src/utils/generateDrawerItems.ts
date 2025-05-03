@@ -116,6 +116,11 @@ export const drawerItems = (role: UserRole) => {
           title: "Payment History",
           path: `${role}/payment-history`,
           icon: DashboardIcon,
+        },
+        {
+          title: "My Profile",
+          path: `${role}/my-profile`,
+          icon: PersonOutlineIcon,
         }
       );
       break;

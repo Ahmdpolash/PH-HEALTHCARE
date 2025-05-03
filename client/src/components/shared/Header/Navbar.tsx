@@ -52,7 +52,7 @@ const Navbar = () => {
             ) : null}
           </Stack>
 
-          {userInfo?.userId ? (
+          {userInfo?.email ? (
             <Button color="error" onClick={handleLogOut} sx={{ boxShadow: 0 }}>
               Logout
             </Button>
